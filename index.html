@@ -1,484 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-CN">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Global Human Signal</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background: #050b16;
-      color: #eef3ff;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
-    }
-    a { color: inherit; text-decoration: none; }
-    .container {
-      width: min(1180px, 94vw);
-      margin: 0 auto;
-      padding: 20px 0 80px;
-    }
-    .topbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      gap: 16px;
-      padding: 18px 0 26px;
-      border-bottom: 1px solid rgba(255,255,255,0.08);
-      margin-bottom: 24px;
-    }
-    .brand h1 {
-      margin: 0;
-      font-size: clamp(28px, 4vw, 48px);
-      line-height: 0.95;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-    .brand p {
-      margin: 10px 0 0;
-      color: rgba(235,242,255,0.72);
-      font-size: 13px;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-    }
-    .status-pill {
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 999px;
-      padding: 12px 16px;
-      font-size: 13px;
-      white-space: nowrap;
-      color: rgba(255,255,255,0.9);
-      background: rgba(255,255,255,0.03);
-    }
-
-    .hero-bar {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 12px;
-      margin: 10px 0 26px;
-      padding: 16px 18px;
-      border-radius: 20px;
-      border: 1px solid rgba(255,255,255,0.08);
-      background: linear-gradient(180deg, rgba(7,18,39,0.95), rgba(9,17,28,0.9));
-      text-align: center;
-      font-size: 15px;
-    }
-    .hero-globe {
-      width: 22px;
-      height: 22px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 35% 35%, #6ec8ff, #2f80ff 55%, #112a54 100%);
-      box-shadow: 0 0 12px rgba(72,151,255,0.45);
-      flex: 0 0 auto;
-    }
-
-    .section {
-      margin-top: 28px;
-      padding: 18px;
-      border: 1px solid rgba(255,255,255,0.08);
-      border-radius: 24px;
-      background: linear-gradient(180deg, rgba(7,14,27,0.95), rgba(8,14,23,0.92));
-      box-shadow: 0 10px 30px rgba(0,0,0,0.18);
-    }
-    .section-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-end;
-      gap: 12px;
-      margin-bottom: 14px;
-    }
-    .section-title {
-      margin: 0;
-      font-size: 22px;
-      letter-spacing: 0.04em;
-    }
-    .section-note {
-      color: rgba(235,242,255,0.62);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-
-    .featured-grid {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 14px;
-    }
-    .featured-card {
-      min-height: 170px;
-      padding: 16px;
-      border-radius: 20px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      cursor: pointer;
-      transition: transform 0.18s ease, border-color 0.18s ease;
-    }
-    .featured-card:hover {
-      transform: translateY(-3px);
-      border-color: rgba(120,180,255,0.35);
-    }
-    .featured-card.system {
-      background: linear-gradient(180deg, rgba(20,41,78,0.38), rgba(14,24,42,0.5));
-      border-color: rgba(100,160,255,0.2);
-    }
-    .featured-flag {
-      font-size: 18px;
-      margin-bottom: 8px;
-    }
-    .featured-title {
-      font-size: 17px;
-      line-height: 1.35;
-      font-weight: 700;
-    }
-    .featured-meta {
-      margin-top: 12px;
-      font-size: 12px;
-      color: rgba(235,242,255,0.68);
-      line-height: 1.5;
-    }
-
-    .send-grid {
-      display: grid;
-      grid-template-columns: 1fr 280px;
-      gap: 16px;
-      align-items: stretch;
-    }
-    .send-box {
-      border-radius: 20px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 16px;
-    }
-    .send-label {
-      display: flex;
-      justify-content: space-between;
-      gap: 12px;
-      margin-bottom: 10px;
-      color: rgba(235,242,255,0.72);
-      font-size: 12px;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-    }
-    textarea {
-      width: 100%;
-      min-height: 140px;
-      resize: vertical;
-      border: none;
-      outline: none;
-      border-radius: 16px;
-      padding: 16px;
-      background: rgba(0,0,0,0.22);
-      color: #eef3ff;
-      font-size: 16px;
-      line-height: 1.6;
-    }
-    .send-hints {
-      display: grid;
-      gap: 8px;
-      align-content: start;
-    }
-    .hint-card {
-      border-radius: 18px;
-      padding: 14px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      color: rgba(235,242,255,0.76);
-      font-size: 13px;
-      line-height: 1.6;
-    }
-    .send-actions {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      margin-top: 12px;
-    }
-    .muted {
-      color: rgba(235,242,255,0.56);
-      font-size: 12px;
-      line-height: 1.5;
-    }
-    button {
-      border: none;
-      outline: none;
-      cursor: pointer;
-      transition: transform 0.16s ease, opacity 0.16s ease;
-    }
-    button:hover { transform: translateY(-1px); }
-    .primary-btn {
-      padding: 14px 20px;
-      border-radius: 999px;
-      background: #f0f4fb;
-      color: #08111f;
-      font-weight: 700;
-      font-size: 15px;
-    }
-    .ghost-btn {
-      padding: 12px 16px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.05);
-      color: #eef3ff;
-      border: 1px solid rgba(255,255,255,0.1);
-      font-size: 14px;
-    }
-
-    .flow-list {
-      display: grid;
-      gap: 12px;
-    }
-    .flow-item {
-      padding: 15px 16px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      display: grid;
-      gap: 8px;
-    }
-    .flow-top {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-      font-size: 12px;
-      color: rgba(235,242,255,0.62);
-    }
-    .flow-flag {
-      font-size: 16px;
-    }
-    .flow-text {
-      font-size: 15px;
-      line-height: 1.6;
-      color: #eef3ff;
-    }
-    .flow-tags {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-    }
-    .tag {
-      padding: 6px 10px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.05);
-      border: 1px solid rgba(255,255,255,0.08);
-      font-size: 12px;
-      color: rgba(235,242,255,0.74);
-    }
-
-    .pool-layout {
-      display: grid;
-      grid-template-columns: 1fr 1.2fr 1fr;
-      gap: 16px;
-      align-items: stretch;
-    }
-    .pool-side, .pool-center {
-      border-radius: 22px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-      padding: 16px;
-    }
-    .pool-side h4, .pool-center h4 {
-      margin: 0 0 10px;
-      font-size: 16px;
-    }
-    .pool-metrics {
-      display: grid;
-      gap: 10px;
-      margin-bottom: 14px;
-    }
-    .metric {
-      padding: 12px 14px;
-      border-radius: 16px;
-      background: rgba(0,0,0,0.18);
-      border: 1px solid rgba(255,255,255,0.07);
-    }
-    .metric-label {
-      font-size: 12px;
-      color: rgba(235,242,255,0.58);
-      margin-bottom: 6px;
-    }
-    .metric-value {
-      font-size: 20px;
-      font-weight: 700;
-    }
-    .triangle-note {
-      font-size: 12px;
-      color: rgba(235,242,255,0.62);
-      line-height: 1.6;
-      margin-top: 10px;
-    }
-    .triangle-note::before {
-      content: "△ ";
-    }
-
-    .signal-display {
-      min-height: 360px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      gap: 14px;
-    }
-    .signal-card {
-      flex: 1;
-      border-radius: 22px;
-      background: linear-gradient(180deg, rgba(16,29,57,0.62), rgba(9,16,31,0.82));
-      border: 1px solid rgba(120,180,255,0.18);
-      padding: 20px;
-      position: relative;
-      overflow: hidden;
-    }
-    .signal-card.empty {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      color: rgba(235,242,255,0.4);
-      border-style: dashed;
-    }
-    .signal-status {
-      font-size: 12px;
-      color: rgba(235,242,255,0.64);
-      margin-bottom: 12px;
-    }
-    .signal-title {
-      font-size: 22px;
-      line-height: 1.35;
-      font-weight: 700;
-      margin-bottom: 16px;
-    }
-    .signal-body {
-      color: rgba(235,242,255,0.82);
-      line-height: 1.7;
-      font-size: 15px;
-    }
-    .signal-bottom {
-      margin-top: 18px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      align-items: center;
-    }
-    .signal-mini {
-      font-size: 12px;
-      color: rgba(235,242,255,0.62);
-    }
-    .pool-actions {
-      display: flex;
-      gap: 12px;
-      justify-content: center;
-      flex-wrap: wrap;
-    }
-    .draw-btn {
-      min-width: 150px;
-      padding: 14px 18px;
-      border-radius: 16px;
-      font-weight: 700;
-      font-size: 14px;
-      background: #eef3ff;
-      color: #08111f;
-    }
-    .draw-btn.ai {
-      background: linear-gradient(90deg, #8ec5ff, #d5e8ff);
-    }
-
-    .footer-note {
-      margin-top: 14px;
-      text-align: center;
-      font-size: 12px;
-      color: rgba(235,242,255,0.55);
-      line-height: 1.6;
-    }
-
-    .modal-mask {
-      position: fixed;
-      inset: 0;
-      background: rgba(2,8,18,0.72);
-      display: none;
-      align-items: center;
-      justify-content: center;
-      padding: 20px;
-      z-index: 50;
-    }
-    .modal-mask.show {
-      display: flex;
-    }
-    .modal {
-      width: min(760px, 100%);
-      max-height: 88vh;
-      overflow: auto;
-      border-radius: 24px;
-      background: #07111f;
-      border: 1px solid rgba(255,255,255,0.1);
-      padding: 22px;
-    }
-    .modal-top {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-      gap: 16px;
-      margin-bottom: 16px;
-    }
-    .modal-title {
-      margin: 0;
-      font-size: 24px;
-    }
-    .close-btn {
-      padding: 10px 14px;
-      border-radius: 999px;
-      background: rgba(255,255,255,0.08);
-      color: #fff;
-      border: 1px solid rgba(255,255,255,0.12);
-    }
-    .modal-block {
-      margin-top: 16px;
-      padding: 16px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(255,255,255,0.08);
-    }
-    .modal-block h5 {
-      margin: 0 0 10px;
-      font-size: 13px;
-      letter-spacing: 0.08em;
-      color: rgba(235,242,255,0.62);
-      text-transform: uppercase;
-    }
-    .modal-block p {
-      margin: 0;
-      line-height: 1.75;
-      color: rgba(235,242,255,0.86);
-    }
-
-    @media (max-width: 1100px) {
-      .featured-grid { grid-template-columns: repeat(2, 1fr); }
-      .pool-layout { grid-template-columns: 1fr; }
-      .send-grid { grid-template-columns: 1fr; }
-    }
-    @media (max-width: 700px) {
-      .featured-grid { grid-template-columns: 1fr; }
-      .topbar {
-        flex-direction: column;
-        align-items: stretch;
-      }
-      .brand h1 {
-        font-size: 34px;
-      }
-      .section {
-        padding: 14px;
-        border-radius: 20px;
-      }
-      .signal-title {
-        font-size: 20px;
-      }
-      .pool-actions {
-        flex-direction: column;
-      }
-      .draw-btn {
-        width: 100%;
-      }
-    }
-  </style>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div class="container">
@@ -487,111 +13,314 @@
         <h1>GLOBAL HUMAN SIGNAL</h1>
         <p>Distributed Record of Reality</p>
       </div>
-      <div class="status-pill">GS-0 AI ONLINE · 全球信号系统启动中</div>
+      <div class="topbar-side">
+        <div class="status-pill">系统在线</div>
+        <div class="topbar-clock" id="clock">Syncing UTC...</div>
+      </div>
     </div>
 
     <div class="hero-bar">
       <div class="hero-globe"></div>
-      <div><strong id="heroSignalCount">Global Signals: 99</strong></div>
+      <div class="hero-bar-text">
+        <strong id="heroSignalCount">Global Signals: 04</strong>
+        <span id="headlineCluster">当前重点事件：Metro disruption</span>
+      </div>
     </div>
 
     <section class="section">
       <div class="section-header">
-        <h2 class="section-title">精选集</h2>
-        <div class="section-note">系统整理后的重点事件 · 当前版本为前端静态原型</div>
+        <div>
+          <h2 class="section-title">重点事件</h2>
+          <div class="section-note">保留原始视觉骨架，同时用更系统化的事件表达展示当前重点信号。</div>
+        </div>
+        <div class="section-note">Higher-level clusters surface first</div>
       </div>
-      <div class="featured-grid" id="featuredGrid"></div>
+      <div class="featured-grid" id="featuredGrid">
+        <article class="featured-card system active" data-cluster-card="Metro disruption">
+          <div>
+            <div class="featured-flag">JP</div>
+            <div class="featured-title">Tokyo Metro disruption</div>
+          </div>
+          <div class="featured-meta">重点事件 · 核心换乘站与线路之间的拥堵正在扩大。</div>
+        </article>
+        <article class="featured-card" data-cluster-card="Weather shift">
+          <div>
+            <div class="featured-flag">FI</div>
+            <div class="featured-title">Helsinki Weather shift</div>
+          </div>
+          <div class="featured-meta">市中心道路与港口方向的能见度正在下降。</div>
+        </article>
+        <article class="featured-card" data-cluster-card="Power outage">
+          <div>
+            <div class="featured-flag">AR</div>
+            <div class="featured-title">Buenos Aires Power outage</div>
+          </div>
+          <div class="featured-meta">多个市中心街区仍处于停电状态，交通控制受到影响。</div>
+        </article>
+        <article class="featured-card" data-cluster-card="Public gathering">
+          <div>
+            <div class="featured-flag">FR</div>
+            <div class="featured-title">Paris Public gathering</div>
+          </div>
+          <div class="featured-meta">议会附近的人群正在聚集，周边道路开始变慢。</div>
+        </article>
+        <article class="featured-card stat-card">
+          <div>
+            <div class="featured-flag">SYS</div>
+            <div class="featured-title"><span id="signalCount">04</span> 条可见信号</div>
+          </div>
+          <div class="featured-meta"><span id="clusterCount">04</span> 个活跃事件簇 · 文本优先 · 匿名记录</div>
+        </article>
+      </div>
     </section>
 
     <section class="section">
       <div class="section-header">
-        <h2 class="section-title">发送信号</h2>
-        <div class="section-note">发送后会先进入本地演示流，当前版本尚未连接真实 AI 审核</div>
+        <div>
+          <h2 class="section-title">发送信号</h2>
+          <div class="section-note">沿用你原本的发送区布局，把可用输入功能完整接进来。</div>
+        </div>
+        <div class="composer-status" id="composerStatus">等待输入</div>
       </div>
       <div class="send-grid">
         <div class="send-box">
+          <div class="send-fields-row">
+            <label class="field-group">
+              <span>城市</span>
+              <input id="city" class="text-input" type="text" placeholder="Tokyo" />
+            </label>
+            <label class="field-group">
+              <span>国家</span>
+              <input id="country" class="text-input" type="text" placeholder="Japan" />
+            </label>
+            <label class="field-group">
+              <span>事件标签</span>
+              <input id="context" class="text-input" type="text" placeholder="Metro disruption" />
+            </label>
+          </div>
           <div class="send-label">
             <span>SEND SIGNAL</span>
-            <span>USER ONLY NEEDS ONE SENTENCE</span>
+            <span>ONE SHORT OBSERVATION IS ENOUGH</span>
           </div>
-          <textarea id="signalInput" placeholder="记录你所在城市此刻正在发生的事情…"></textarea>
+          <textarea id="message" placeholder="记录你所在城市此刻正在发生的事情..."></textarea>
           <div class="send-actions">
-            <div class="muted">原文将优先保留。当前版本用于结构演示，不上传真实数据库。</div>
-            <button class="primary-btn" id="sendBtn">发送信号</button>
+            <div class="muted">输入会先进入本地原型流，不会推送到线上。保留文本优先、匿名、低摩擦的原设计方向。</div>
+            <div class="send-action-buttons">
+              <button class="ghost-btn" id="clearBtn" type="button">清空</button>
+              <button class="primary-btn" id="submitSignal" type="button">发送信号</button>
+            </div>
           </div>
         </div>
         <div class="send-hints">
-          <div class="hint-card">尽量描述正在发生的事情，而不是长篇评论。</div>
-          <div class="hint-card">可以表达个人感受，但请尽量保留事实线索。</div>
-          <div class="hint-card">禁止违法内容、暴力煽动、仇恨言论与人身信息泄露。</div>
+          <div class="hint-card">尽量描述此刻正在发生的事实，而不是长篇评论。</div>
+          <div class="hint-card">系统会保留原始信号，同时把相似内容归入更高层级事件。</div>
+          <div class="hint-card">点击下方任一 signal 可展开查看时间线、相关信号和附近地点。</div>
         </div>
       </div>
     </section>
 
     <section class="section">
       <div class="section-header">
-        <h2 class="section-title">实时流</h2>
-        <div class="section-note">当前世界正在出现的信号 · 当前版本为本地模拟流</div>
+        <div>
+          <h2 class="section-title">实时流</h2>
+          <div class="section-note">以你原来的流式列表为主，补入当前原型里已经可用的行内展开交互。</div>
+        </div>
+        <div class="section-note">Newest signals first</div>
       </div>
-      <div class="flow-list" id="flowList"></div>
+      <div class="flow-list" id="flowList">
+        <article class="flow-item signal open" data-cluster="Metro disruption" data-city="Tokyo">
+          <button type="button" class="signal-trigger flow-trigger" aria-expanded="true">
+            <div class="flow-top">
+              <span class="flow-flag">JP</span>
+              <span>Tokyo</span>
+              <span>21:14 UTC</span>
+              <span class="tag">Metro disruption</span>
+            </div>
+            <div class="flow-text">Subway line delays are spreading across central stations after an equipment fault during evening traffic.</div>
+          </button>
+          <div class="signal-details">
+            <div class="detail-grid">
+              <div class="detail-card">
+                <h3>相关信号</h3>
+                <p>过去 18 分钟内，Shinjuku、Ginza 和 Ueno 出现了 3 条匹配报告。</p>
+              </div>
+              <div class="detail-card">
+                <h3>时间线</h3>
+                <p>20:56 出现拥挤报告，21:03 观测到线路中断，21:14 延误范围扩大。</p>
+              </div>
+              <div class="detail-card">
+                <h3>附近地点</h3>
+                <ul>
+                  <li>Shinjuku Station</li>
+                  <li>Ginza transfer corridor</li>
+                  <li>Ueno platform access</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flow-item signal" data-cluster="Weather shift" data-city="Helsinki">
+          <button type="button" class="signal-trigger flow-trigger" aria-expanded="false">
+            <div class="flow-top">
+              <span class="flow-flag">FI</span>
+              <span>Helsinki</span>
+              <span>20:48 UTC</span>
+              <span class="tag">Weather shift</span>
+            </div>
+            <div class="flow-text">Heavy snow has started across the city center and visibility is falling quickly on main roads.</div>
+          </button>
+          <div class="signal-details">
+            <div class="detail-grid">
+              <div class="detail-card">
+                <h3>相关信号</h3>
+                <p>机场走廊和有轨电车路线的观测都在说明降雪正在增强。</p>
+              </div>
+              <div class="detail-card">
+                <h3>时间线</h3>
+                <p>20:31 初雪，20:40 持续降雪，20:48 市中心能见度下降。</p>
+              </div>
+              <div class="detail-card">
+                <h3>附近地点</h3>
+                <ul>
+                  <li>Kallio</li>
+                  <li>Central Station</li>
+                  <li>Harbor approach</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flow-item signal" data-cluster="Power outage" data-city="Buenos Aires">
+          <button type="button" class="signal-trigger flow-trigger" aria-expanded="false">
+            <div class="flow-top">
+              <span class="flow-flag">AR</span>
+              <span>Buenos Aires</span>
+              <span>20:06 UTC</span>
+              <span class="tag">Power outage</span>
+            </div>
+            <div class="flow-text">Several downtown blocks are dark and traffic signals are out near the commercial district.</div>
+          </button>
+          <div class="signal-details">
+            <div class="detail-grid">
+              <div class="detail-card">
+                <h3>相关信号</h3>
+                <p>相邻街区的两条报告都指向更大范围的电网中断。</p>
+              </div>
+              <div class="detail-card">
+                <h3>时间线</h3>
+                <p>19:54 首次停电，20:01 商铺开始关闭，20:06 路口失去信号控制。</p>
+              </div>
+              <div class="detail-card">
+                <h3>附近地点</h3>
+                <ul>
+                  <li>Microcentro</li>
+                  <li>Avenida Corrientes</li>
+                  <li>Retiro edge</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flow-item signal" data-cluster="Public gathering" data-city="Paris">
+          <button type="button" class="signal-trigger flow-trigger" aria-expanded="false">
+            <div class="flow-top">
+              <span class="flow-flag">FR</span>
+              <span>Paris</span>
+              <span>19:42 UTC</span>
+              <span class="tag">Public gathering</span>
+            </div>
+            <div class="flow-text">Crowds are growing near parliament barriers and nearby streets are beginning to slow.</div>
+          </button>
+          <div class="signal-details">
+            <div class="detail-grid">
+              <div class="detail-card">
+                <h3>相关信号</h3>
+                <p>三条观测都指向人群正从附近大道向集会区域移动。</p>
+              </div>
+              <div class="detail-card">
+                <h3>时间线</h3>
+                <p>19:18 看到标语，19:30 人群密度上升，19:42 街道通行开始变慢。</p>
+              </div>
+              <div class="detail-card">
+                <h3>附近地点</h3>
+                <ul>
+                  <li>Assembly perimeter</li>
+                  <li>Left bank crossing</li>
+                  <li>Transit checkpoint</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
     </section>
 
     <section class="section">
       <div class="section-header">
-        <h2 class="section-title">信号池</h2>
-        <div class="section-note">信号池取代主页面档案馆 · 历史信号探索模式</div>
+        <div>
+          <h2 class="section-title">Signal Pool</h2>
+          <div class="section-note">保留你原来中轴展示的布局思路，并接入系统化说明、城市列表和抽取式查看入口。</div>
+        </div>
+        <div class="section-note">Structured interface overview</div>
       </div>
 
       <div class="pool-layout">
         <div class="pool-side">
-          <h4>AI知识池</h4>
+          <h4>系统指标</h4>
           <div class="pool-metrics">
             <div class="metric">
-              <div class="metric-label">AI信号剩余</div>
-              <div class="metric-value" id="aiRemaining">12</div>
+              <div class="metric-label">可见信号</div>
+              <div class="metric-value" id="panelSignalCount">04</div>
             </div>
             <div class="metric">
-              <div class="metric-label">AI已阅信号</div>
-              <div class="metric-value" id="aiRead">0</div>
+              <div class="metric-label">活跃事件簇</div>
+              <div class="metric-value" id="panelClusterCount">04</div>
             </div>
           </div>
-          <button class="draw-btn ai" id="drawAiBtn">AI 抽取</button>
-          <div class="triangle-note">AI池内容为冷门公开知识与整理型信号，用于冷启动与探索体验。</div>
+          <button class="draw-btn ai" id="drawAiBtn" type="button">查看重点信号</button>
+          <div class="triangle-note">首页继续沿用“可观察、可抽取、可演示”的原始产品方向，不删除你的设计骨架。</div>
         </div>
 
         <div class="pool-center">
-          <h4>信号显示区</h4>
+          <h4>信号展示区</h4>
           <div class="signal-display">
-            <div class="signal-card empty" id="signalCard">
-              点击下方按钮，抽取一条世界信号或 AI 信号
+            <div class="signal-card" id="signalCard">
+              <div>
+                <div class="signal-status">重点事件</div>
+                <div class="signal-title">Tokyo Metro disruption</div>
+                <div class="signal-body">Short reports enter the stream immediately, remain visible as evidence, and can later be grouped into broader events.</div>
+              </div>
+              <div class="signal-bottom">
+                <span class="tag">Tokyo · Japan</span>
+                <span class="signal-mini">Inline expansion and clustering remain active in this local prototype.</span>
+              </div>
             </div>
             <div class="pool-actions">
-              <button class="draw-btn" id="drawWorldBtn">抽取世界信号</button>
-              <button class="ghost-btn" id="openReadBtn">查看已阅信号</button>
+              <button class="draw-btn" id="drawWorldBtn" type="button">抽取世界信号</button>
+              <button class="ghost-btn" id="openReadBtn" type="button">查看已读信号</button>
             </div>
           </div>
-          <div class="footer-note">
-            当前版本中，抽取后的事件会从剩余池中扣除；同类信号按事件单位模拟合并。
-          </div>
+          <div class="footer-note">当前首页仍然是本地原型，但已经把你的原始结构方向和可交互功能合到同一界面里。</div>
         </div>
 
         <div class="pool-side">
-          <h4>世界信号池</h4>
-          <div class="pool-metrics">
+          <h4>活跃城市</h4>
+          <div class="city-list large" id="cityList">
+            <span>Tokyo</span>
+            <span>Helsinki</span>
+            <span>Buenos Aires</span>
+            <span>Paris</span>
+          </div>
+          <div class="pool-metrics compact">
             <div class="metric">
-              <div class="metric-label">剩余信号</div>
-              <div class="metric-value" id="worldRemaining">18</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">有效信号</div>
-              <div class="metric-value" id="worldValid">18</div>
-            </div>
-            <div class="metric">
-              <div class="metric-label">已阅信号</div>
-              <div class="metric-value" id="worldRead">0</div>
+              <div class="metric-label">运行模式</div>
+              <div class="metric-value small">Terminal</div>
             </div>
           </div>
-          <div class="triangle-note">不会抽取无效信号；“哈哈”“测试”等低信息内容不会进入信号池。</div>
+          <div class="triangle-note">No accounts、text-first experience、no page reload 仍然是当前首页原型的核心规则。</div>
         </div>
       </div>
     </section>
@@ -601,10 +330,10 @@
     <div class="modal">
       <div class="modal-top">
         <div>
-          <h3 class="modal-title" id="modalTitle">信号详情</h3>
-          <div class="muted" id="modalMeta">Signal Detail</div>
+          <h3 class="modal-title" id="modalTitle">Signal Detail</h3>
+          <div class="muted" id="modalMeta">Cluster detail</div>
         </div>
-        <button class="close-btn" id="closeModalBtn">关闭</button>
+        <button class="close-btn" id="closeModalBtn" type="button">关闭</button>
       </div>
 
       <div class="modal-block">
@@ -613,7 +342,7 @@
       </div>
 
       <div class="modal-block">
-        <h5>AI整理</h5>
+        <h5>系统摘要</h5>
         <p id="modalAi"></p>
       </div>
 
@@ -624,297 +353,6 @@
     </div>
   </div>
 
-  <script>
-    const featuredData = [
-      {
-        type: "system",
-        flag: "🌍",
-        title: "Global Signals: 99",
-        meta: "系统播报 · 重大事件会在此停留更久"
-      },
-      {
-        type: "event",
-        flag: "🇨🇦",
-        title: "Toronto downtown garbage overflow reported",
-        meta: "GS-0 AI · Toronto · Urban sanitation signal"
-      },
-      {
-        type: "event",
-        flag: "🇫🇷",
-        title: "Paris heavy rain signal detected",
-        meta: "GS-0 AI · Paris · Weather condition report"
-      },
-      {
-        type: "event",
-        flag: "🇮🇳",
-        title: "Mumbai local power outage mentioned by users",
-        meta: "GS-0 AI · Mumbai · Public utility signal"
-      },
-      {
-        type: "event",
-        flag: "🇯🇵",
-        title: "Tokyo station crowding trend observed",
-        meta: "GS-0 AI · Tokyo · Public transport signal"
-      }
-    ];
-
-    const realtimeData = [
-      {
-        flag: "🇨🇦",
-        city: "Toronto",
-        time: "2m ago",
-        text: "Downtown garbage bins near a major street look overloaded again tonight.",
-        tags: ["生活环境", "城市观察", "待整理"]
-      },
-      {
-        flag: "🇫🇷",
-        city: "Paris",
-        time: "5m ago",
-        text: "Heavy rain is making evening traffic slower around the city center.",
-        tags: ["天气", "交通", "实时"]
-      },
-      {
-        flag: "🇮🇳",
-        city: "Mumbai",
-        time: "8m ago",
-        text: "A local power outage has been mentioned by multiple users in the same district.",
-        tags: ["公共设施", "电力", "合并中"]
-      },
-      {
-        flag: "🇯🇵",
-        city: "Tokyo",
-        time: "11m ago",
-        text: "Station crowding appears heavier than usual after a schedule delay.",
-        tags: ["地铁", "拥挤", "实时"]
-      }
-    ];
-
-    let worldSignals = [
-      {
-        title: "Tokyo station delay event",
-        original: "Multiple users mentioned a sudden station delay and unusual crowding near a major Tokyo transfer station.",
-        ai: "东京某大型换乘站出现延误与拥挤相关信号，当前内容为 AI 整合后的优质原文。",
-        more: "相关信号：6 · 抽取方式：自动合并 · 当前版本为静态演示。",
-        related: 6,
-        source: "世界信号池",
-        meta: "🇯🇵 Tokyo · Related signals: 6"
-      },
-      {
-        title: "Toronto garbage overflow signal",
-        original: "Several local observations described full garbage containers and slower sanitation response in downtown Toronto.",
-        ai: "多伦多市中心出现垃圾清运延迟相关信号，当前展示为 AI 整合后的优质原文。",
-        more: "相关信号：4 · 生活类信号 · 已按事件单位合并。",
-        related: 4,
-        source: "世界信号池",
-        meta: "🇨🇦 Toronto · Related signals: 4"
-      },
-      {
-        title: "Paris heavy rain traffic slowdown",
-        original: "Users reported that heavy rain was affecting evening movement and street-level traffic in Paris.",
-        ai: "巴黎出现暴雨导致通行效率下降的信号，当前内容为 AI 合并摘要。",
-        more: "相关信号：3 · 天气类事件 · 当前版本不接入真实检索。",
-        related: 3,
-        source: "世界信号池",
-        meta: "🇫🇷 Paris · Related signals: 3"
-      },
-      {
-        title: "Mumbai power outage cluster",
-        original: "Users from the same urban area described local power loss and temporary darkness across nearby streets.",
-        ai: "孟买某区域出现电力中断相关信号，已按同类事件进行合并展示。",
-        more: "相关信号：5 · 公共设施类事件。",
-        related: 5,
-        source: "世界信号池",
-        meta: "🇮🇳 Mumbai · Related signals: 5"
-      }
-    ];
-
-    let aiSignals = [
-      {
-        title: "Iceland has almost no stable mosquito population",
-        original: "Iceland is one of the rare places where mosquitoes have difficulty establishing stable populations.",
-        ai: "冰岛因气候与生态条件特殊，几乎没有稳定的蚊子种群。",
-        more: "来源：AI整理 · 类型：冷门公开知识",
-        related: 1,
-        source: "AI知识池",
-        meta: "AI Knowledge · Nature"
-      },
-      {
-        title: "Some Antarctic areas receive extremely low snowfall",
-        original: "Parts of Antarctica are so dry that annual snowfall is surprisingly low.",
-        ai: "南极部分区域极度干燥，降雪量长期很低。",
-        more: "来源：AI整理 · 类型：地理知识",
-        related: 1,
-        source: "AI知识池",
-        meta: "AI Knowledge · Geography"
-      },
-      {
-        title: "The largest known fungus covers a vast forest area",
-        original: "One of the world’s largest known organisms is a fungus stretching over a very large forest area.",
-        ai: "世界上最大的已知生物之一是一片跨越大片森林区域的真菌网络。",
-        more: "来源：AI整理 · 类型：生物知识",
-        related: 1,
-        source: "AI知识池",
-        meta: "AI Knowledge · Biology"
-      },
-      {
-        title: "Mars has a day slightly longer than Earth",
-        original: "A full day on Mars is a little longer than a day on Earth.",
-        ai: "火星上的一天比地球略长，大约多出三十多分钟。",
-        more: "来源：AI整理 · 类型：天文知识",
-        related: 1,
-        source: "AI知识池",
-        meta: "AI Knowledge · Astronomy"
-      }
-    ];
-
-    let readSignals = [];
-    let aiReadSignals = [];
-
-    const featuredGrid = document.getElementById("featuredGrid");
-    const flowList = document.getElementById("flowList");
-    const signalInput = document.getElementById("signalInput");
-    const sendBtn = document.getElementById("sendBtn");
-    const drawWorldBtn = document.getElementById("drawWorldBtn");
-    const drawAiBtn = document.getElementById("drawAiBtn");
-    const openReadBtn = document.getElementById("openReadBtn");
-    const signalCard = document.getElementById("signalCard");
-    const worldRemaining = document.getElementById("worldRemaining");
-    const worldValid = document.getElementById("worldValid");
-    const worldRead = document.getElementById("worldRead");
-    const aiRemaining = document.getElementById("aiRemaining");
-    const aiRead = document.getElementById("aiRead");
-    const heroSignalCount = document.getElementById("heroSignalCount");
-
-    const modalMask = document.getElementById("modalMask");
-    const modalTitle = document.getElementById("modalTitle");
-    const modalMeta = document.getElementById("modalMeta");
-    const modalOriginal = document.getElementById("modalOriginal");
-    const modalAi = document.getElementById("modalAi");
-    const modalMore = document.getElementById("modalMore");
-    const closeModalBtn = document.getElementById("closeModalBtn");
-
-    function renderFeatured() {
-      featuredGrid.innerHTML = "";
-      featuredData.forEach((item, index) => {
-        const card = document.createElement("div");
-        card.className = "featured-card" + (index === 0 ? " system" : "");
-        card.innerHTML =           <div>             <div class="featured-flag">${item.flag}</div>             <div class="featured-title">${item.title}</div>           </div>           <div class="featured-meta">${item.meta}</div>        ;
-        featuredGrid.appendChild(card);
-      });
-    }
-
-    function renderRealtime() {
-      flowList.innerHTML = "";
-      realtimeData.forEach(item => {
-        const node = document.createElement("div");
-        node.className = "flow-item";
-        node.innerHTML =           <div class="flow-top">             <span class="flow-flag">${item.flag}</span>             <span>${item.city}</span>             <span>${item.time}</span>           </div>           <div class="flow-text">${item.text}</div>           <div class="flow-tags">             ${item.tags.map(tag =><span class="tag">${tag}</span>).join("")}           </div>         ;
-        flowList.appendChild(node);
-      });
-    }
-
-    function renderCounts() {
-      worldRemaining.textContent = worldSignals.reduce((sum, item) => sum + item.related, 0);
-      worldValid.textContent = worldSignals.reduce((sum, item) => sum + item.related, 0);
-      worldRead.textContent = readSignals.length;
-      aiRemaining.textContent = aiSignals.length;
-      aiRead.textContent = aiReadSignals.length;
-      heroSignalCount.textContent = Global Signals: ${99 + realtimeData.length + readSignals.length};
-    }
-
-    function showSignalCard(item) {
-      signalCard.classList.remove("empty");
-      signalCard.innerHTML =         <div>           <div class="signal-status">${item.source}</div>           <div class="signal-title">${item.title}</div>           <div class="signal-body">${item.ai}</div>         </div>         <div class="signal-bottom">           <span class="tag">${item.meta}</span>           <span class="signal-mini">${item.more}</span>         </div>      ;
-      signalCard.onclick = () => openModal(item);
-    }
-
-    function openModal(item) {
-      modalTitle.textContent = item.title;
-      modalMeta.textContent = item.meta;
-      modalOriginal.textContent = item.original;
-      modalAi.textContent = item.ai;
-      modalMore.textContent = item.more;
-      modalMask.classList.add("show");
-    }
-
-    function closeModal() {
-      modalMask.classList.remove("show");
-    }
-
-    function drawWorldSignal() {
-      if (!worldSignals.length) {
-        signalCard.classList.add("empty");
-        signalCard.innerHTML = "当前无可抽取记录";
-        return;
-      }
-      const item = worldSignals.shift();
-      readSignals.unshift(item);
-      showSignalCard(item);
-      renderCounts();
-    }
-
-    function drawAiSignal() {
-      if (!aiSignals.length) {
-        signalCard.classList.add("empty");
-        signalCard.innerHTML = "AI知识池已抽空（当前为演示版本）";
-        return;
-      }
-      const item = aiSignals.shift();
-      aiReadSignals.unshift(item);
-      showSignalCard(item);
-      renderCounts();
-    }
-
-    function openReadList() {
-      const combined = [...readSignals, ...aiReadSignals];
-      if (!combined.length) {
-        openModal({
-          title: "已阅信号",
-          meta: "Read Signals",
-          original: "当前还没有已阅信号。",
-          ai: "点击“抽取世界信号”或“AI抽取”后，这里会记录你已经看过的信号。",
-          more: "当前版本为静态原型。",
-        });
-        return;
-      }
-      const text = combined.map((item, i) => ${i + 1}. ${item.title}).join("； ");
-      openModal({
-        title: "已阅信号",
-        meta: Read Signals · ${combined.length},
-        original: text,
-        ai: "这里用于查看已经抽出的历史信号。后续版本可以扩展为独立阅读列表。",
-        more: "当前版本只做结构演示，不接数据库。",
-      });
-    }
-
-    function sendSignal() {
-      const value = signalInput.value.trim();
-      if (!value) return;
-      const entry = {
-        flag: "🌐",
-        city: "New Signal",
-        time: "just now",
-        text: value,
-        tags: ["用户输入", "本地演示", "未审核"]
-      };
-      realtimeData.unshift(entry);
-      if (realtimeData.length > 8) realtimeData.pop();
-      renderRealtime();
-      signalInput.value = "";
-    }
-
-    sendBtn.addEventListener("click", sendSignal);
-    drawWorldBtn.addEventListener("click", drawWorldSignal);
-    drawAiBtn.addEventListener("click", drawAiSignal);
-    openReadBtn.addEventListener("click", openReadList);
-    closeModalBtn.addEventListener("click", closeModal);
-    modalMask.addEventListener("click", (e) => {
-      if (e.target === modalMask) closeModal();
-    });
-
-    renderFeatured();
-    renderRealtime();
-    renderCounts();
-  </script>
+  <script src="script.js"></script>
 </body>
 </html>
