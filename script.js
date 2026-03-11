@@ -47,7 +47,7 @@ function updateClock() {
     minute: "2-digit",
     second: "2-digit",
     timeZone: "UTC"
-  }) + " UTC";
+  }) + " 世界标准时";
 }
 
 function setComposerStatus(text, live) {
@@ -60,10 +60,10 @@ function getSignals() {
 }
 
 function getSignalData(signal) {
-  const city = signal.dataset.city || signal.querySelector(".flow-top span:nth-child(2)")?.textContent || "Unknown";
+  const city = signal.dataset.city || signal.querySelector(".flow-top span:nth-child(2)")?.textContent || "未知地区";
   const country = (signal.dataset.country || signal.querySelector(".flow-flag")?.textContent || "").toUpperCase();
-  const cluster = signal.dataset.cluster || "Unclustered observation";
-  const time = signal.querySelector(".flow-top span:nth-child(3)")?.textContent || "UTC";
+  const cluster = signal.dataset.cluster || "未归类观察";
+  const time = signal.querySelector(".flow-top span:nth-child(3)")?.textContent || "世界标准时";
   const message = signal.querySelector(".flow-text")?.textContent || "";
   const original = message;
   const summary = signal.querySelector(".detail-card p")?.textContent || message;
@@ -72,7 +72,7 @@ function getSignalData(signal) {
 
 function updateCounts() {
   const signals = getSignals();
-  const clusters = new Set(signals.map((signal) => signal.dataset.cluster || "Unclustered observation"));
+  const clusters = new Set(signals.map((signal) => signal.dataset.cluster || "未归类观察"));
   const signalText = String(signals.length).padStart(2, "0");
   const clusterText = String(clusters.size).padStart(2, "0");
 
@@ -80,18 +80,18 @@ function updateCounts() {
   clusterCount.textContent = clusterText;
   panelSignalCount.textContent = signalText;
   panelClusterCount.textContent = clusterText;
-  heroSignalCount.textContent = "Global Signals: " + signalText;
+  heroSignalCount.textContent = "全球信号：" + signalText;
 }
 
 function refreshHeadlineCluster() {
   const latestSignal = getSignals()[0];
-  const cluster = latestSignal ? latestSignal.dataset.cluster || "Unclustered observation" : "Waiting for signal";
+  const cluster = latestSignal ? latestSignal.dataset.cluster || "未归类观察" : "等待信号";
   headlineCluster.textContent = "当前重点事件：" + cluster;
 }
 
 function syncFeaturedCards() {
   const latestSignal = getSignals()[0];
-  const activeCluster = latestSignal ? latestSignal.dataset.cluster || "Unclustered observation" : "";
+  const activeCluster = latestSignal ? latestSignal.dataset.cluster || "未归类观察" : "";
 
   featuredGrid.querySelectorAll("[data-cluster-card]").forEach((card) => {
     card.classList.toggle("active", card.dataset.clusterCard === activeCluster);
@@ -137,7 +137,7 @@ function openModal(data) {
   modalMeta.textContent = data.time;
   modalOriginal.textContent = data.original;
   modalAi.textContent = data.summary;
-  modalMore.textContent = "系统会保留原始 signal 作为证据，并在需要时合并进更高层级的事件簇。";
+  modalMore.textContent = "系统会保留原始信号作为证据，并在需要时合并进更高层级的事件簇。";
   modalMask.classList.add("show");
 }
 
@@ -147,22 +147,22 @@ function closeModal() {
 
 function buildDetailMarkup(cluster, city, countryCode) {
   return `
-    <div class="detail-updating">Updating • ${countryToFlag(countryCode)} ${city || "Global"}</div>
+    <div class="detail-updating">更新中 • ${countryToFlag(countryCode)} ${city || "全球"}</div>
     <div class="detail-grid">
       <div class="detail-card">
-        <h3>Related signals</h3>
-        <p>Waiting for corroborating reports from nearby locations for ${cluster}.</p>
+        <h3>关联信号</h3>
+        <p>正在等待来自附近区域、可相互印证的 ${cluster} 补充报告。</p>
       </div>
       <div class="detail-card">
-        <h3>Timeline</h3>
-        <p>Recorded just now and inserted into the local prototype stream.</p>
+        <h3>时间线</h3>
+        <p>该记录已写入当前本地原型流，并进入持续更新状态。</p>
       </div>
       <div class="detail-card">
-        <h3>Nearby locations</h3>
+        <h3>附近地点</h3>
         <ul>
-          <li>Additional local evidence pending</li>
-          <li>Cluster expansion placeholder</li>
-          <li>Inline detail remains available</li>
+          <li>等待更多本地证据</li>
+          <li>预留事件簇扩展位</li>
+          <li>支持继续行内展开查看</li>
         </ul>
       </div>
     </div>
@@ -176,12 +176,12 @@ function createSignalItem(city, country, cluster, message) {
     hour: "2-digit",
     minute: "2-digit",
     timeZone: "UTC"
-  }) + " UTC";
+  }) + " 世界标准时";
 
   article.className = "flow-item signal open";
   article.dataset.city = city;
   article.dataset.country = countryCode;
-  article.dataset.cluster = cluster || "Unclustered observation";
+  article.dataset.cluster = cluster || "未归类观察";
   article.innerHTML = `
     <button type="button" class="signal-trigger flow-trigger" aria-expanded="true">
       <div class="flow-top">
@@ -353,7 +353,7 @@ function submitSignal() {
   syncFeaturedCards();
   updateCityList();
   showSignalCard(getSignalData(signal));
-  setComposerStatus("Signal 已发送", true);
+  setComposerStatus("信号已发送", true);
   clearFields();
 }
 
@@ -361,7 +361,7 @@ function drawWorldSignal() {
   const firstSignal = getSignals()[0];
   if (!firstSignal) {
     signalCard.classList.add("empty");
-    signalCard.textContent = "当前本地原型里没有可抽取的 signal。";
+    signalCard.textContent = "当前本地原型里没有可抽取的信号。";
     return;
   }
 
@@ -386,12 +386,12 @@ function drawAiSignal() {
 function openReadList() {
   if (!readSignals.length) {
     openModal({
-      city: "Read signals",
-      cluster: "History",
-      time: "Local prototype",
+      city: "已读信号",
+      cluster: "历史",
+      time: "本地原型",
       original: "当前还没有已抽取的信号记录。",
-      summary: "点击「抽取世界信号」或「查看重点信号」后，这里会显示你看过的 signal。",
-      message: "暂无已读 signal"
+      summary: "点击「抽取世界信号」或「查看重点信号」后，这里会显示你看过的信号。",
+      message: "暂无已读信号"
     });
     return;
   }
@@ -402,7 +402,7 @@ function openReadList() {
     cluster: latest.cluster,
     time: latest.time,
     original: readSignals.map((item, index) => `${index + 1}. ${item.city} · ${item.cluster}`).join("；"),
-    summary: "这里记录的是当前会话中被抽取查看过的 signal。",
+    summary: "这里记录的是当前会话中被抽取查看过的信号。",
     message: latest.message
   });
 }

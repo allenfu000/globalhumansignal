@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Global Signal AI Test</title>
+  <title>全球信号智能控制台</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -76,13 +76,13 @@
 </head>
 <body>
   <div class="panel">
-  <h1>Global Signal AI 控制台</h1>
+  <h1>全球信号智能控制台</h1>
 
-  <textarea id="message" placeholder="在这里输入你想对 AI 说的话..."></textarea>
-  <button id="sendBtn">发送给 AI</button>
+  <textarea id="message" placeholder="在这里输入你想发送的内容..."></textarea>
+  <button id="sendBtn">发送</button>
 
   <div class="status" id="status"></div>
-  <div class="output" id="output">AI 回复会显示在这里</div>
+  <div class="output" id="output">回复会显示在这里</div>
   </div>
 
   <script>
@@ -106,7 +106,7 @@
         return;
       }
 
-      status.textContent = "正在请求 AI...";
+      status.textContent = "正在请求中...";
       output.textContent = "";
 
       try {
@@ -126,7 +126,7 @@
           data?.data?.output?.[0]?.content?.[0]?.text ||
           "";
 
-        output.textContent = reply || "（AI 未返回文本内容）";
+        output.textContent = reply || "（未返回文本内容）";
         status.textContent = "请求成功";
       } catch (error) {
         output.textContent = "请求失败：" + error.message;
