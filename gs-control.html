@@ -9,27 +9,18 @@
       font-family: Arial, sans-serif;
       margin: 0;
       min-height: 100vh;
-      padding: 0;
+      padding: 24px;
       background: #1a1a1a;
       color: #f3f3f3;
-    }
-
-    .hero {
-      height: 50vh;
       display: flex;
       align-items: center;
       justify-content: center;
-      text-align: center;
-      font-size: clamp(52px, 10vw, 140px);
-      font-weight: 700;
-      line-height: 1.05;
-      padding: 0 24px;
     }
 
     .panel {
       max-width: 860px;
       width: min(860px, 100%);
-      margin: 24px auto;
+      margin: 0;
       padding: 28px;
       background: #242424;
       border: 1px solid #333;
@@ -84,13 +75,6 @@
   </style>
 </head>
 <body>
-  <script>
-    const enteredPassword = prompt("请输入密码");
-    window.__accessGranted = enteredPassword === "589898";
-  </script>
-
-  <div class="hero">金伯伦是大傻狗</div>
-
   <div class="panel">
   <h1>Global Signal AI 控制台</h1>
 
@@ -102,9 +86,6 @@
   </div>
 
   <script>
-    if (!window.__accessGranted) {
-      document.body.innerHTML = "Access denied";
-    } else {
     const sendBtn = document.getElementById("sendBtn");
     const messageInput = document.getElementById("message");
     const output = document.getElementById("output");
@@ -152,7 +133,6 @@
         status.textContent = "出错了";
       }
     });
-    }
   </script>
 </body>
 </html>
