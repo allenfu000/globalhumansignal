@@ -184,6 +184,17 @@ button, input, textarea { font: inherit; }
   line-height: 1.5;
 }
 
+.section-note::before,
+.muted::before,
+.hint-card::before,
+.footer-note::before,
+.triangle-note::before,
+.active-filter::before,
+.detail-updating::before {
+  content: "▲ ";
+  color: rgba(235,242,255,0.7);
+}
+
 .stream-tools {
   display: grid;
   justify-items: end;

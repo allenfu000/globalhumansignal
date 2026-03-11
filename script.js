@@ -61,12 +61,13 @@ function getSignals() {
 
 function getSignalData(signal) {
   const city = signal.dataset.city || signal.querySelector(".flow-top span:nth-child(2)")?.textContent || "Unknown";
+  const country = (signal.dataset.country || signal.querySelector(".flow-flag")?.textContent || "").toUpperCase();
   const cluster = signal.dataset.cluster || "Unclustered observation";
   const time = signal.querySelector(".flow-top span:nth-child(3)")?.textContent || "UTC";
   const message = signal.querySelector(".flow-text")?.textContent || "";
   const original = message;
   const summary = signal.querySelector(".detail-card p")?.textContent || message;
-  return { city, cluster, time, message, original, summary };
+  return { city, country, cluster, time, message, original, summary };
 }
 
 function updateCounts() {
@@ -101,25 +102,27 @@ function updateCityList() {
   const cities = [];
   getSignals().forEach((signal) => {
     const city = signal.dataset.city;
-    if (city && !cities.includes(city)) {
-      cities.push(city);
+    const country = (signal.dataset.country || "").toUpperCase();
+    if (city && !cities.some((entry) => entry.city === city)) {
+      cities.push({ city, country });
     }
   });
 
   cityList.innerHTML = "";
-  cities.slice(0, 8).forEach((city) => {
+  cities.slice(0, 8).forEach((entry) => {
     const tag = document.createElement("span");
-    tag.textContent = city;
+    tag.textContent = `${countryToFlag(entry.country)} ${entry.city}`;
     cityList.appendChild(tag);
   });
 }
 
 function showSignalCard(data) {
   signalCard.classList.remove("empty");
+  const titleWithFlag = `${countryToFlag(data.country)} ${data.city}`;
   signalCard.innerHTML = `
     <div>
       <div class="signal-status">${data.cluster}</div>
-      <div class="signal-title">${data.city}</div>
+      <div class="signal-title">${titleWithFlag}</div>
       <div class="signal-body">${data.message}</div>
     </div>
     <div class="signal-bottom">
@@ -130,7 +133,7 @@ function showSignalCard(data) {
 }
 
 function openModal(data) {
-  modalTitle.textContent = data.city + " · " + data.cluster;
+  modalTitle.textContent = `${countryToFlag(data.country)} ${data.city} · ${data.cluster}`;
   modalMeta.textContent = data.time;
   modalOriginal.textContent = data.original;
   modalAi.textContent = data.summary;
@@ -168,6 +171,7 @@ function buildDetailMarkup(cluster, city, countryCode) {
 
 function createSignalItem(city, country, cluster, message) {
   const article = document.createElement("article");
+  const countryCode = country.slice(0, 2).toUpperCase();
   const time = new Date().toLocaleTimeString("en-GB", {
     hour: "2-digit",
     minute: "2-digit",
@@ -176,13 +180,13 @@ function createSignalItem(city, country, cluster, message) {
 
   article.className = "flow-item signal open";
   article.dataset.city = city;
-  article.dataset.country = country.slice(0, 2).toUpperCase();
+  article.dataset.country = countryCode;
   article.dataset.cluster = cluster || "Unclustered observation";
   article.innerHTML = `
     <button type="button" class="signal-trigger flow-trigger" aria-expanded="true">
       <div class="flow-top">
-        <span class="flow-flag filter-flag" data-filter-country="${country.slice(0, 2).toUpperCase()}" tabindex="0" role="button">${country.slice(0, 2).toUpperCase()}</span>
-        <span class="filter-city" data-filter-city="${city}" tabindex="0" role="button">${city}</span>
+        <span class="flow-flag filter-flag" data-filter-country="${countryCode}" tabindex="0" role="button">${countryCode}</span>
+        <span class="filter-city" data-filter-city="${city}" tabindex="0" role="button">${countryToFlag(countryCode)} ${city}</span>
         <span>${time}</span>
         <span class="tag">${article.dataset.cluster}</span>
       </div>
@@ -196,7 +200,7 @@ function createSignalItem(city, country, cluster, message) {
   return article;
 }
 
-function updateOrInsertFeaturedCard(city, cluster, message) {
+function updateOrInsertFeaturedCard(city, countryCode, cluster, message) {
   if (!cluster) {
     return;
   }
@@ -217,8 +221,9 @@ function updateOrInsertFeaturedCard(city, cluster, message) {
     featuredGrid.insertBefore(card, statCard || null);
   }
 
-  card.querySelector(".featured-flag").textContent = city.slice(0, 2).toUpperCase();
-  card.querySelector(".featured-title").textContent = city + " " + cluster;
+  const normalizedCountry = (countryCode || "").toUpperCase();
+  card.querySelector(".featured-flag").textContent = normalizedCountry || city.slice(0, 2).toUpperCase();
+  card.querySelector(".featured-title").textContent = `${countryToFlag(normalizedCountry)} ${city} ${cluster}`;
   card.querySelector(".featured-meta").textContent = message;
 
   const cards = Array.from(featuredGrid.querySelectorAll(".featured-card:not(.stat-card)"));
@@ -342,7 +347,7 @@ function submitSignal() {
   flowList.prepend(signal);
   bindSignalToggles(signal);
   bindFlowFilters(signal);
-  updateOrInsertFeaturedCard(city, signal.dataset.cluster, message);
+  updateOrInsertFeaturedCard(city, signal.dataset.country, signal.dataset.cluster, message);
   updateCounts();
   refreshHeadlineCluster();
   syncFeaturedCards();
