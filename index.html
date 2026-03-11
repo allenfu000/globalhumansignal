@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Global Human Signal</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="topbar">
+      <div class="brand">
+        <h1>GLOBAL HUMAN SIGNAL</h1>
+        <p>Distributed Record of Reality</p>
+      </div>
+      <div class="topbar-side">
+        <div class="status-pill">系统在线</div>
+        <div class="topbar-clock" id="clock">Syncing UTC...</div>
+      </div>
+    </div>
+
+    <div class="hero-bar">
+      <div class="hero-globe"></div>
+      <div class="hero-bar-text">
+        <strong id="heroSignalCount">Global Signals: 04</strong>
+        <span id="headlineCluster">当前重点事件：Metro disruption</span>
+      </div>
+    </div>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">重点事件</h2>
+          <div class="section-note">保留原始视觉骨架，同时用更系统化的事件表达展示当前重点信号。</div>
+        </div>
+        <div class="section-note">Higher-level clusters surface first</div>
+      </div>
+      <div class="featured-grid" id="featuredGrid">
+        <article class="featured-card system active" data-cluster-card="Metro disruption">
+          <div>
+            <div class="featured-flag">JP</div>
+            <div class="featured-title">Tokyo Metro disruption</div>
+          </div>
+          <div class="featured-meta">重点事件 · 核心换乘站与线路之间的拥堵正在扩大。</div>
+        </article>
+        <article class="featured-card" data-cluster-card="Weather shift">
+          <div>
+            <div class="featured-flag">FI</div>
+            <div class="featured-title">Helsinki Weather shift</div>
+          </div>
+          <div class="featured-meta">市中心道路与港口方向的能见度正在下降。</div>
+        </article>
+        <article class="featured-card" data-cluster-card="Power outage">
+          <div>
+            <div class="featured-flag">AR</div>
+            <div class="featured-title">Buenos Aires Power outage</div>
+          </div>
+          <div class="featured-meta">多个市中心街区仍处于停电状态，交通控制受到影响。</div>
+        </article>
+        <article class="featured-card" data-cluster-card="Public gathering">
+          <div>
+            <div class="featured-flag">FR</div>
+            <div class="featured-title">Paris Public gathering</div>
+          </div>
+          <div class="featured-meta">议会附近的人群正在聚集，周边道路开始变慢。</div>
+        </article>
+        <article class="featured-card stat-card">
+          <div>
+            <div class="featured-flag">SYS</div>
+            <div class="featured-title"><span id="signalCount">04</span> 条可见信号</div>
+          </div>
+          <div class="featured-meta"><span id="clusterCount">04</span> 个活跃事件簇 · 文本优先 · 匿名记录</div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">发送信号</h2>
+          <div class="section-note">沿用你原本的发送区布局，把可用输入功能完整接进来。</div>
+        </div>
+        <div class="composer-status" id="composerStatus">等待输入</div>
+      </div>
+      <div class="send-grid">
+        <div class="send-box">
+          <div class="send-fields-row">
+            <label class="field-group">
+              <span>城市</span>
+              <input id="city" class="text-input" type="text" placeholder="Tokyo" />
+            </label>
+            <label class="field-group">
+              <span>国家</span>
+              <input id="country" class="text-input" type="text" placeholder="Japan" />
+            </label>
+            <label class="field-group">
+              <span>事件标签</span>
+              <input id="context" class="text-input" type="text" placeholder="Metro disruption" />
+            </label>
+          </div>
+          <div class="send-label">
+            <span>SEND SIGNAL</span>
+            <span>ONE SHORT OBSERVATION IS ENOUGH</span>
+          </div>
+          <textarea id="message" placeholder="记录你所在城市此刻正在发生的事情..."></textarea>
+          <div class="send-actions">
+            <div class="muted">输入会先进入本地原型流，不会推送到线上。保留文本优先、匿名、低摩擦的原设计方向。</div>
+            <div class="send-action-buttons">
+              <button class="ghost-btn" id="clearBtn" type="button">清空</button>
+              <button class="primary-btn" id="submitSignal" type="button">发送信号</button>
+            </div>
+          </div>
+        </div>
+        <div class="send-hints">
+          <div class="hint-card">尽量描述此刻正在发生的事实，而不是长篇评论。</div>
+          <div class="hint-card">系统会保留原始信号，同时把相似内容归入更高层级事件。</div>
+          <div class="hint-card">点击下方任一 signal 可展开查看时间线、相关信号和附近地点。</div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">实时流</h2>
+          <div class="section-note">以你原来的流式列表为主，补入当前原型里已经可用的行内展开交互。</div>
+        </div>
+        <div class="section-note">Newest signals first</div>
+      </div>
+      <div class="flow-list" id="flowList">
+        <article class="flow-item signal open" data-cluster="Metro disruption" data-city="Tokyo">
+          <button type="button" class="signal-trigger flow-trigger" aria-expanded="true">
+            <div class="flow-top">
+              <span class="flow-flag">JP</span>
+              <span>Tokyo</span>
+              <span>21:14 UTC</span>
+              <span class="tag">Metro disruption</span>
+            </div>
+            <div class="flow-text">Subway line delays are spreading across central stations after an equipment fault during evening traffic.</div>
+          </button>
+          <div class="signal-details">
+            <div class="detail-grid">
+              <div class="detail-card">
+                <h3>相关信号</h3>
+                <p>过去 18 分钟内，Shinjuku、Ginza 和 Ueno 出现了 3 条匹配报告。</p>
+              </div>
+              <div class="detail-card">
+                <h3>时间线</h3>
+                <p>20:56 出现拥挤报告，21:03 观测到线路中断，21:14 延误范围扩大。</p>
+              </div>
+              <div class="detail-card">
+                <h3>附近地点</h3>
+                <ul>
+                  <li>Shinjuku Station</li>
+                  <li>Ginza transfer corridor</li>
+                  <li>Ueno platform access</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flow-item signal" data-cluster="Weather shift" data-city="Helsinki">
+          <button type="button" class="signal-trigger flow-trigger" aria-expanded="false">
+            <div class="flow-top">
+              <span class="flow-flag">FI</span>
+              <span>Helsinki</span>
+              <span>20:48 UTC</span>
+              <span class="tag">Weather shift</span>
+            </div>
+            <div class="flow-text">Heavy snow has started across the city center and visibility is falling quickly on main roads.</div>
+          </button>
+          <div class="signal-details">
+            <div class="detail-grid">
+              <div class="detail-card">
+                <h3>相关信号</h3>
+                <p>机场走廊和有轨电车路线的观测都在说明降雪正在增强。</p>
+              </div>
+              <div class="detail-card">
+                <h3>时间线</h3>
+                <p>20:31 初雪，20:40 持续降雪，20:48 市中心能见度下降。</p>
+              </div>
+              <div class="detail-card">
+                <h3>附近地点</h3>
+                <ul>
+                  <li>Kallio</li>
+                  <li>Central Station</li>
+                  <li>Harbor approach</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flow-item signal" data-cluster="Power outage" data-city="Buenos Aires">
+          <button type="button" class="signal-trigger flow-trigger" aria-expanded="false">
+            <div class="flow-top">
+              <span class="flow-flag">AR</span>
+              <span>Buenos Aires</span>
+              <span>20:06 UTC</span>
+              <span class="tag">Power outage</span>
+            </div>
+            <div class="flow-text">Several downtown blocks are dark and traffic signals are out near the commercial district.</div>
+          </button>
+          <div class="signal-details">
+            <div class="detail-grid">
+              <div class="detail-card">
+                <h3>相关信号</h3>
+                <p>相邻街区的两条报告都指向更大范围的电网中断。</p>
+              </div>
+              <div class="detail-card">
+                <h3>时间线</h3>
+                <p>19:54 首次停电，20:01 商铺开始关闭，20:06 路口失去信号控制。</p>
+              </div>
+              <div class="detail-card">
+                <h3>附近地点</h3>
+                <ul>
+                  <li>Microcentro</li>
+                  <li>Avenida Corrientes</li>
+                  <li>Retiro edge</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <article class="flow-item signal" data-cluster="Public gathering" data-city="Paris">
+          <button type="button" class="signal-trigger flow-trigger" aria-expanded="false">
+            <div class="flow-top">
+              <span class="flow-flag">FR</span>
+              <span>Paris</span>
+              <span>19:42 UTC</span>
+              <span class="tag">Public gathering</span>
+            </div>
+            <div class="flow-text">Crowds are growing near parliament barriers and nearby streets are beginning to slow.</div>
+          </button>
+          <div class="signal-details">
+            <div class="detail-grid">
+              <div class="detail-card">
+                <h3>相关信号</h3>
+                <p>三条观测都指向人群正从附近大道向集会区域移动。</p>
+              </div>
+              <div class="detail-card">
+                <h3>时间线</h3>
+                <p>19:18 看到标语，19:30 人群密度上升，19:42 街道通行开始变慢。</p>
+              </div>
+              <div class="detail-card">
+                <h3>附近地点</h3>
+                <ul>
+                  <li>Assembly perimeter</li>
+                  <li>Left bank crossing</li>
+                  <li>Transit checkpoint</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Signal Pool</h2>
+          <div class="section-note">保留你原来中轴展示的布局思路，并接入系统化说明、城市列表和抽取式查看入口。</div>
+        </div>
+        <div class="section-note">Structured interface overview</div>
+      </div>
+
+      <div class="pool-layout">
+        <div class="pool-side">
+          <h4>系统指标</h4>
+          <div class="pool-metrics">
+            <div class="metric">
+              <div class="metric-label">可见信号</div>
+              <div class="metric-value" id="panelSignalCount">04</div>
+            </div>
+            <div class="metric">
+              <div class="metric-label">活跃事件簇</div>
+              <div class="metric-value" id="panelClusterCount">04</div>
+            </div>
+          </div>
+          <button class="draw-btn ai" id="drawAiBtn" type="button">查看重点信号</button>
+        </div>
+
+        <div class="pool-center">
+          <h4>信号展示区</h4>
+          <div class="signal-display">
+            <div class="signal-card" id="signalCard">
+              <div>
+                <div class="signal-status">重点事件</div>
+                <div class="signal-title">Tokyo Metro disruption</div>
+                <div class="signal-body">Short reports enter the stream immediately, remain visible as evidence, and can later be grouped into broader events.</div>
+              </div>
+              <div class="signal-bottom">
+                <span class="tag">Tokyo · Japan</span>
+                <span class="signal-mini">Inline expansion and clustering remain active in this local prototype.</span>
+              </div>
+            </div>
+            <div class="pool-actions">
+              <button class="draw-btn" id="drawWorldBtn" type="button">抽取世界信号</button>
+              <button class="ghost-btn" id="openReadBtn" type="button">查看已读信号</button>
+            </div>
+          </div>
+          <div class="footer-note">当前首页仍然是本地原型，但已经把你的原始结构方向和可交互功能合到同一界面里。</div>
+        </div>
+
+        <div class="pool-side">
+          <h4>活跃城市</h4>
+          <div class="city-list large" id="cityList">
+            <span>Tokyo</span>
+            <span>Helsinki</span>
+            <span>Buenos Aires</span>
+            <span>Paris</span>
+          </div>
+          <div class="pool-metrics compact">
+            <div class="metric">
+              <div class="metric-label">运行模式</div>
+              <div class="metric-value small">Terminal</div>
+            </div>
+          </div>
+          <div class="triangle-note">No accounts、text-first experience、no page reload 仍然是当前首页原型的核心规则。</div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-mask" id="modalMask">
+    <div class="modal">
+      <div class="modal-top">
+        <div>
+          <h3 class="modal-title" id="modalTitle">Signal Detail</h3>
+          <div class="muted" id="modalMeta">Cluster detail</div>
+        </div>
+        <button class="close-btn" id="closeModalBtn" type="button">关闭</button>
+      </div>
+
+      <div class="modal-block">
+        <h5>原始信号</h5>
+        <p id="modalOriginal"></p>
+      </div>
+
+      <div class="modal-block">
+        <h5>系统摘要</h5>
+        <p id="modalAi"></p>
+      </div>
+
+      <div class="modal-block">
+        <h5>补充说明</h5>
+        <p id="modalMore"></p>
+      </div>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
