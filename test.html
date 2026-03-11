@@ -88,10 +88,12 @@
         const data = await response.json();
 
         const reply =
+          data?.text ||
           data?.output?.[0]?.content?.[0]?.text ||
-          JSON.stringify(data, null, 2);
+          data?.data?.output?.[0]?.content?.[0]?.text ||
+          "";
 
-        output.textContent = reply;
+        output.textContent = reply || "（AI 未返回文本内容）";
         status.textContent = "请求成功";
       } catch (error) {
         output.textContent = "请求失败：" + error.message;
