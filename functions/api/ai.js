@@ -1,10 +1,10 @@
 export async function onRequestPost(context) {
+  try {
     const { request, env } = context;
-  
     const body = await request.json();
     const message = body.message || "hello";
-  
-    const response = await fetch("https://api.openai.com/v1/chat/completions", {
+
+    const response = await fetch("https://api.openai.com/v1/responses", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -12,18 +12,30 @@ export async function onRequestPost(context) {
       },
       body: JSON.stringify({
         model: "gpt-4o-mini",
-        messages: [
-          {
-            role: "user",
-            content: message
-          }
-        ]
+        input: message
       })
     });
-  
+
     const data = await response.json();
-  
+
     return new Response(JSON.stringify(data), {
-      headers: { "Content-Type": "application/json" }
+      status: response.status,
+      headers: {
+        "Content-Type": "application/json"
+      }
     });
+  } catch (error) {
+    return new Response(
+      JSON.stringify({
+        error: "Server error",
+        details: error.message
+      }),
+      {
+        status: 500,
+        headers: {
+          "Content-Type": "application/json"
+        }
+      }
+    );
   }
+}

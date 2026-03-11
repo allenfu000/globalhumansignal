@@ -5,134 +5,101 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Global Signal AI Test</title>
   <style>
-    * { box-sizing: border-box; }
-
     body {
-      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f5f7fb;
+      max-width: 800px;
+      margin: 40px auto;
+      padding: 20px;
+      background: #f7f7f7;
       color: #111;
     }
 
-    .page {
-      max-width: 820px;
-      margin: 36px auto;
-      padding: 20px;
-      background: #fff;
-      border: 1px solid #e5e8ef;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.06);
-    }
-
     h1 {
-      margin: 0 0 16px;
       font-size: 28px;
-    }
-
-    .hint {
-      margin: 0 0 14px;
-      color: #556070;
-      font-size: 14px;
+      margin-bottom: 20px;
     }
 
     textarea {
       width: 100%;
-      min-height: 140px;
+      height: 140px;
       padding: 12px;
       font-size: 16px;
+      box-sizing: border-box;
       margin-bottom: 12px;
-      border: 1px solid #ccd3e0;
-      border-radius: 8px;
-      resize: vertical;
     }
 
     button {
-      padding: 10px 16px;
-      font-size: 15px;
+      padding: 12px 20px;
+      font-size: 16px;
       cursor: pointer;
-      border: 1px solid #2f80ff;
-      background: #2f80ff;
-      color: #fff;
-      border-radius: 8px;
+    }
+
+    .output {
+      margin-top: 24px;
+      padding: 16px;
+      background: white;
+      border: 1px solid #ddd;
+      min-height: 120px;
+      white-space: pre-wrap;
     }
 
     .status {
       margin-top: 12px;
-      color: #5a6576;
+      color: #666;
       font-size: 14px;
-    }
-
-    .output {
-      margin-top: 12px;
-      padding: 14px;
-      background: #fafbfe;
-      border: 1px solid #d9dfeb;
-      border-radius: 8px;
-      min-height: 120px;
-      white-space: pre-wrap;
-      line-height: 1.5;
     }
   </style>
 </head>
 <body>
-  <main class="page">
-    <h1>Global Signal AI 测试页</h1>
-    <p class="hint">页面已加载。输入内容后点击按钮测试接口。</p>
+  <h1>Global Signal AI 测试页</h1>
 
-    <textarea id="message" placeholder="在这里输入你想对 AI 说的话..."></textarea>
-    <button id="sendBtn" type="button">发送给 AI</button>
+  <textarea id="message" placeholder="在这里输入你想对 AI 说的话..."></textarea>
+  <button id="sendBtn">发送给 AI</button>
 
-    <div class="status" id="status">页面已加载</div>
-    <div class="output" id="output">AI 回复会显示在这里</div>
-  </main>
+  <div class="status" id="status"></div>
+  <div class="output" id="output">AI 回复会显示在这里</div>
 
   <script>
-    (function () {
-      var sendBtn = document.getElementById("sendBtn");
-      var messageInput = document.getElementById("message");
-      var output = document.getElementById("output");
-      var status = document.getElementById("status");
+    const sendBtn = document.getElementById("sendBtn");
+    const messageInput = document.getElementById("message");
+    const output = document.getElementById("output");
+    const status = document.getElementById("status");
 
-      if (!sendBtn || !messageInput || !output || !status) {
+    sendBtn.addEventListener("click", async () => {
+      const message = messageInput.value.trim();
+
+      if (!message) {
+        status.textContent = "请先输入内容";
         return;
       }
 
-      sendBtn.addEventListener("click", async function () {
-        var message = messageInput.value.trim();
-        if (!message) {
-          status.textContent = "请先输入内容";
-          return;
-        }
+      status.textContent = "正在请求 AI...";
+      output.textContent = "";
 
-        status.textContent = "正在请求 AI...";
-        output.textContent = "";
+      try {
+        const response = await fetch("/api/ai", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json"
+          },
+          body: JSON.stringify({ message })
+        });
 
-        try {
-          var response = await fetch("/api/ai", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: message })
-          });
+        const data = await response.json();
 
-          if (!response.ok) {
-            throw new Error("HTTP " + response.status);
-          }
+        const reply =
+          data?.output_text ||
+          data?.output?.[0]?.content?.[0]?.text ||
+          data?.choices?.[0]?.message?.content ||
+          JSON.stringify(data, null, 2);
 
-          var data = await response.json();
-          var reply = "";
-          if (data && data.choices && data.choices[0] && data.choices[0].message) {
-            reply = data.choices[0].message.content || "";
-          }
-          output.textContent = reply || JSON.stringify(data, null, 2);
-          status.textContent = "请求成功";
-        } catch (error) {
-          // 本地打开 file:// 或接口未启动时，给出可见反馈，避免“像空白页”。
-          output.textContent =
-            "接口暂不可用（" + error.message + "）。\n\n本地模拟回复：\n你输入的是：\n" + message;
-          status.textContent = "接口不可用，已返回本地模拟结果";
-        }
-      });
-    })();
+        output.textContent = reply;
+        status.textContent = "请求成功";
+      } catch (error) {
+        output.textContent = "请求失败：" + error.message;
+        status.textContent = "出错了";
+      }
+    });
   </script>
 </body>
 </html>
