@@ -21,6 +21,7 @@ body {
   background-attachment: fixed;
   color: var(--text);
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+  line-height: 1.5;
 }
 
 a { color: inherit; text-decoration: none; }
@@ -39,6 +40,15 @@ button, input, textarea { font: inherit; }
   box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.72),
     0 0 0 1px rgba(255, 255, 255, 0.02);
+}
+
+.container::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  background: radial-gradient(circle at 20% 0%, rgba(142, 197, 255, 0.08), transparent 38%);
+  z-index: -1;
 }
 
 .topbar {
@@ -181,12 +191,13 @@ button, input, textarea { font: inherit; }
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease;
+  transition: transform 0.18s ease, border-color 0.18s ease, background 0.18s ease, box-shadow 0.18s ease;
 }
 
 .featured-card:hover {
   transform: translateY(-3px);
   border-color: rgba(120,180,255,0.35);
+  box-shadow: 0 12px 24px rgba(0,0,0,0.2);
 }
 
 .featured-card.system,
@@ -284,6 +295,7 @@ textarea {
 .text-input:focus,
 textarea:focus {
   border-color: rgba(120,180,255,0.35);
+  box-shadow: 0 0 0 3px rgba(120,180,255,0.12);
 }
 
 textarea {
@@ -311,6 +323,7 @@ textarea {
   color: rgba(235,242,255,0.76);
   font-size: 13px;
   line-height: 1.6;
+  background: rgba(255,255,255,0.025);
 }
 
 .send-actions {
@@ -337,10 +350,13 @@ button {
   border: none;
   outline: none;
   cursor: pointer;
-  transition: transform 0.16s ease, opacity 0.16s ease;
+  transition: transform 0.16s ease, opacity 0.16s ease, box-shadow 0.16s ease;
 }
 
-button:hover { transform: translateY(-1px); }
+button:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+}
 
 .primary-btn {
   padding: 14px 20px;
@@ -369,6 +385,12 @@ button:hover { transform: translateY(-1px); }
   padding: 15px 16px;
   display: grid;
   gap: 8px;
+  transition: border-color 0.2s ease, background 0.2s ease;
+}
+
+.flow-item:hover {
+  border-color: rgba(120,180,255,0.25);
+  background: rgba(255,255,255,0.045);
 }
 
 .flow-trigger {
@@ -514,6 +536,17 @@ button:hover { transform: translateY(-1px); }
   padding: 20px;
   position: relative;
   overflow: hidden;
+}
+
+.signal-card::after {
+  content: "";
+  position: absolute;
+  right: -20%;
+  top: -40%;
+  width: 220px;
+  height: 220px;
+  background: radial-gradient(circle, rgba(142, 197, 255, 0.16), transparent 70%);
+  pointer-events: none;
 }
 
 .signal-card.empty {
@@ -663,12 +696,16 @@ button:hover { transform: translateY(-1px); }
   }
 
   .brand h1 {
-    font-size: 42px;
+    font-size: 38px;
   }
 
   .section {
     padding: 14px;
     border-radius: 20px;
+  }
+
+  .section-header {
+    align-items: flex-start;
   }
 
   .signal-title {
