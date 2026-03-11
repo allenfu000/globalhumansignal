@@ -88,9 +88,7 @@
         const data = await response.json();
 
         const reply =
-          data?.output_text ||
           data?.output?.[0]?.content?.[0]?.text ||
-          data?.choices?.[0]?.message?.content ||
           JSON.stringify(data, null, 2);
 
         output.textContent = reply;
