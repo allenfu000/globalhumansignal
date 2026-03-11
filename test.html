@@ -3,101 +3,193 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Global Signal AI Test</title>
+  <title>Global Signal AI Workspace</title>
   <style>
+    * { box-sizing: border-box; }
+
+    :root {
+      --bg: #0b1220;
+      --panel: #121b2d;
+      --panel-2: #0f1727;
+      --line: #25324d;
+      --text: #e8eefc;
+      --muted: #9fb0d3;
+      --accent: #5b8cff;
+    }
+
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      max-width: 800px;
-      margin: 40px auto;
-      padding: 20px;
-      background: #f7f7f7;
-      color: #111;
+      background: var(--bg);
+      color: var(--text);
     }
 
-    h1 {
-      font-size: 28px;
-      margin-bottom: 20px;
+    .workspace {
+      width: min(1100px, 94vw);
+      margin: 24px auto;
+      display: grid;
+      grid-template-columns: 1.4fr 1fr;
+      gap: 16px;
     }
 
-    textarea {
-      width: 100%;
-      height: 140px;
-      padding: 12px;
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      padding: 14px;
+    }
+
+    .panel h2 {
+      margin: 0 0 12px;
       font-size: 16px;
-      box-sizing: border-box;
-      margin-bottom: 12px;
+      color: var(--muted);
+      font-weight: 600;
+    }
+
+    .chat-log,
+    .response-box {
+      background: var(--panel-2);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 12px;
+      min-height: 220px;
+      white-space: pre-wrap;
+      line-height: 1.6;
+    }
+
+    .chat-log {
+      max-height: 420px;
+      overflow: auto;
+    }
+
+    .field {
+      width: 100%;
+      margin-top: 10px;
+      background: #0d1524;
+      color: var(--text);
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      padding: 10px 12px;
+      resize: vertical;
+      font-size: 14px;
+      line-height: 1.5;
+    }
+
+    #userMessage {
+      min-height: 96px;
+    }
+
+    #systemPrompt {
+      min-height: 200px;
+    }
+
+    .actions {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
     }
 
     button {
-      padding: 12px 20px;
-      font-size: 16px;
+      border: 0;
+      border-radius: 10px;
+      background: var(--accent);
+      color: #fff;
+      padding: 10px 16px;
       cursor: pointer;
-    }
-
-    .output {
-      margin-top: 24px;
-      padding: 16px;
-      background: white;
-      border: 1px solid #ddd;
-      min-height: 120px;
-      white-space: pre-wrap;
+      font-size: 14px;
     }
 
     .status {
-      margin-top: 12px;
-      color: #666;
-      font-size: 14px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    @media (max-width: 900px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
 <body>
-  <h1>Global Signal AI 测试页</h1>
+  <div class="workspace">
+    <section class="panel">
+      <h2>1. AI Chat Panel</h2>
+      <div class="chat-log" id="chatLog">欢迎使用 Global Signal AI Workspace</div>
+      <textarea id="userMessage" class="field" placeholder="输入你要和 AI 说的话..."></textarea>
+      <div class="actions">
+        <button id="sendBtn" type="button">3. Send</button>
+        <span class="status" id="status">Ready</span>
+      </div>
+    </section>
 
-  <textarea id="message" placeholder="在这里输入你想对 AI 说的话..."></textarea>
-  <button id="sendBtn">发送给 AI</button>
+    <section class="panel">
+      <h2>2. System Prompt Editor</h2>
+      <textarea id="systemPrompt" class="field" placeholder="在这里写平台规则（Global Signal system prompt）...">你是 Global Signal 的平台 AI 助手。请始终简洁、准确、可执行。</textarea>
 
-  <div class="status" id="status"></div>
-  <div class="output" id="output">AI 回复会显示在这里</div>
+      <h2 style="margin-top: 14px;">4. Response Panel</h2>
+      <div class="response-box" id="responsePanel">AI 回复会显示在这里（仅文本）。</div>
+    </section>
+  </div>
 
   <script>
     const sendBtn = document.getElementById("sendBtn");
-    const messageInput = document.getElementById("message");
-    const output = document.getElementById("output");
-    const status = document.getElementById("status");
+    const userMessage = document.getElementById("userMessage");
+    const systemPrompt = document.getElementById("systemPrompt");
+    const responsePanel = document.getElementById("responsePanel");
+    const chatLog = document.getElementById("chatLog");
+    const statusEl = document.getElementById("status");
+
+    function appendChat(role, text) {
+      const now = new Date().toLocaleTimeString();
+      chatLog.textContent += "\n\n[" + now + "] " + role + ":\n" + text;
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
 
     sendBtn.addEventListener("click", async () => {
-      const message = messageInput.value.trim();
+      const userText = userMessage.value.trim();
+      const sysText = systemPrompt.value.trim();
 
-      if (!message) {
-        status.textContent = "请先输入内容";
+      if (!userText) {
+        statusEl.textContent = "请输入用户消息";
         return;
       }
 
-      status.textContent = "正在请求 AI...";
-      output.textContent = "";
+      statusEl.textContent = "Sending...";
+      responsePanel.textContent = "";
+      appendChat("USER", userText);
 
       try {
-        const response = await fetch("/api/ai", {
+        const combinedMessage =
+          "System Prompt:\n" + (sysText || "(empty)") + "\n\nUser Message:\n" + userText;
+
+        const res = await fetch("/api/ai", {
           method: "POST",
           headers: {
             "Content-Type": "application/json"
           },
-          body: JSON.stringify({ message })
+          body: JSON.stringify({
+            systemPrompt: sysText,
+            userMessage: userText,
+            message: combinedMessage
+          })
         });
 
-        const data = await response.json();
-
-        const reply =
+        const data = await res.json();
+        const assistantText =
           data?.text ||
           data?.output?.[0]?.content?.[0]?.text ||
           data?.data?.output?.[0]?.content?.[0]?.text ||
           "";
 
-        output.textContent = reply || "（AI 未返回文本内容）";
-        status.textContent = "请求成功";
+        responsePanel.textContent = assistantText || "（AI 未返回文本）";
+        appendChat("ASSISTANT", responsePanel.textContent);
+        statusEl.textContent = "Done";
       } catch (error) {
-        output.textContent = "请求失败：" + error.message;
-        status.textContent = "出错了";
+        responsePanel.textContent = "请求失败";
+        appendChat("SYSTEM", "请求失败: " + error.message);
+        statusEl.textContent = "Error";
       }
     });
   </script>
