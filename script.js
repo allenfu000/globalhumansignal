@@ -80,7 +80,7 @@ function updateCounts() {
   clusterCount.textContent = clusterText;
   panelSignalCount.textContent = signalText;
   panelClusterCount.textContent = clusterText;
-  heroSignalCount.textContent = "全球信号：" + signalText;
+  heroSignalCount.textContent = "🌏全球信号：" + signalText;
 }
 
 function refreshHeadlineCluster() {

@@ -77,6 +77,14 @@ button, input, textarea { font: inherit; }
   text-transform: uppercase;
 }
 
+.brand-line3 {
+  margin: 6px 0 0;
+  color: rgba(235, 242, 255, 0.78);
+  font-size: 12px;
+  letter-spacing: 0.1em;
+  text-transform: none;
+}
+
 .topbar-side {
   display: grid;
   gap: 10px;
@@ -109,39 +117,57 @@ button, input, textarea { font: inherit; }
 
 .hero-bar {
   display: flex;
-  align-items: center;
-  justify-content: center;
+  align-items: stretch;
+  justify-content: space-between;
   gap: 12px;
   margin: 10px 0 26px;
-  padding: 16px 18px;
+  padding: 0;
+  background: transparent;
+}
+
+.hero-main-pill {
+  flex: 1 1 auto;
+  min-height: 56px;
   border-radius: 20px;
   border: 1px solid var(--line);
   background: linear-gradient(180deg, rgba(7,18,39,0.95), rgba(9,17,28,0.9));
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 16px;
   text-align: center;
-  font-size: 15px;
 }
 
-.hero-globe {
-  width: 22px;
-  height: 22px;
-  border-radius: 50%;
-  background: radial-gradient(circle at 35% 35%, #6ec8ff, #2f80ff 55%, #112a54 100%);
-  box-shadow: 0 0 12px rgba(72,151,255,0.45);
-  flex: 0 0 auto;
-}
-
-.hero-bar-text {
+.hero-side-pill {
+  flex: 0 0 120px;
+  border-radius: 16px;
+  border: 1px solid var(--line);
+  background: linear-gradient(180deg, rgba(12,22,41,0.9), rgba(8,16,30,0.95));
+  padding: 10px 12px;
   display: grid;
-  gap: 4px;
+  align-content: center;
+  gap: 6px;
+  font-size: 12px;
+  color: rgba(235,242,255,0.86);
 }
 
-.hero-bar-text strong {
+.hero-main-pill strong {
   font-size: 16px;
 }
 
-.hero-bar-text span {
-  color: var(--muted);
-  font-size: 13px;
+.hero-divider {
+  height: 1px;
+  background: var(--line);
+  margin: -12px 0 10px;
+}
+
+.hero-annotation {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: rgba(235,242,255,0.72);
+  font-size: 12px;
+  margin-bottom: 14px;
 }
 
 .input-rules {
@@ -776,12 +802,33 @@ button:hover {
 
   .hero-bar {
     margin: 0;
-    border-radius: 14px;
-    padding: 12px 14px;
+    gap: 10px;
   }
 
-  .hero-bar-text strong {
-    font-size: 15px;
+  .hero-main-pill {
+    min-height: 52px;
+    border-radius: 14px;
+    padding: 0 12px;
+  }
+
+  .hero-main-pill strong {
+    font-size: 18px;
+  }
+
+  .hero-side-pill {
+    flex: 0 0 96px;
+    border-radius: 12px;
+    padding: 8px 9px;
+    font-size: 11px;
+  }
+
+  .hero-divider {
+    margin: 10px 0 8px;
+  }
+
+  .hero-annotation {
+    margin-bottom: 10px;
+    font-size: 11px;
   }
 
   .input-rules {
