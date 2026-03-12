@@ -361,6 +361,12 @@ textarea {
   align-content: start;
 }
 
+.send-hints-mobile {
+  display: none;
+  margin-top: 12px;
+  gap: 8px;
+}
+
 .hint-card {
   padding: 14px;
   color: rgba(235,242,255,0.76);
@@ -766,6 +772,9 @@ button:hover {
   .featured-grid,
   .send-fields-row { grid-template-columns: 1fr; }
 
+  .section-featured { order: 1; }
+  .section-send { order: 2; }
+
   .topbar {
     flex-direction: column;
     align-items: stretch;
@@ -833,6 +842,14 @@ button:hover {
 
   .send-action-buttons {
     width: 100%;
+  }
+
+  .send-hints-mobile {
+    display: grid;
+  }
+
+  .send-hints .hint-card:nth-child(-n+4) {
+    display: none;
   }
 
   .pool-actions,
