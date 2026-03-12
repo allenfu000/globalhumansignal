@@ -1,6 +1,5 @@
 const clock = document.getElementById("clock");
 const heroSignalCount = document.getElementById("heroSignalCount");
-const headlineCluster = document.getElementById("headlineCluster");
 const signalCount = document.getElementById("signalCount");
 const clusterCount = document.getElementById("clusterCount");
 const panelSignalCount = document.getElementById("panelSignalCount");
@@ -47,6 +46,9 @@ function updateClock() {
 }
 
 function setComposerStatus(text, live) {
+  if (!composerStatus) {
+    return;
+  }
   composerStatus.textContent = text;
   composerStatus.classList.toggle("is-live", Boolean(live));
 }
@@ -80,9 +82,7 @@ function updateCounts() {
 }
 
 function refreshHeadlineCluster() {
-  const latestSignal = getSignals()[0];
-  const cluster = latestSignal ? latestSignal.dataset.cluster || "未归类观察" : "等待信号";
-  headlineCluster.textContent = "实时更新：" + cluster;
+  // 主视觉已简化为仅显示品牌，不再渲染动态说明。
 }
 
 function syncFeaturedCards() {
@@ -207,8 +207,11 @@ function updateOrInsertFeaturedCard(city, countryCode, cluster, message) {
     card.className = "featured-card";
     card.dataset.clusterCard = cluster;
     card.innerHTML = `
-      <div>
+      <div class="featured-head">
+        <div class="featured-code"></div>
         <div class="featured-flag"></div>
+      </div>
+      <div>
         <div class="featured-title"></div>
       </div>
       <div class="featured-meta"></div>
@@ -217,7 +220,8 @@ function updateOrInsertFeaturedCard(city, countryCode, cluster, message) {
   }
 
   const normalizedCountry = (countryCode || "").toUpperCase();
-  card.querySelector(".featured-flag").textContent = `${countryToFlag(normalizedCountry)} ${city}`;
+  card.querySelector(".featured-code").textContent = normalizedCountry || "UN";
+  card.querySelector(".featured-head .featured-flag").textContent = countryToFlag(normalizedCountry);
   card.querySelector(".featured-title").textContent = cluster;
   card.querySelector(".featured-meta").textContent = message;
 
@@ -368,8 +372,7 @@ function drawAiSignal() {
     return;
   }
 
-  const activeHeadline = headlineCluster.textContent.replace("实时更新：", "").trim();
-  const preferred = signals.find((signal) => signal.dataset.cluster === activeHeadline) || signals[0];
+  const preferred = signals[0];
   const data = getSignalData(preferred);
   readSignals.unshift(data);
   showSignalCard(data);

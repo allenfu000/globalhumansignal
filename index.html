@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>全球人类信号</title>
+  <title>全球信号</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -23,56 +23,70 @@
       <div class="hero-globe"></div>
       <div class="hero-bar-text">
         <strong id="heroSignalCount">全球信号</strong>
-        <span id="headlineCluster">实时更新：东京地铁中断</span>
       </div>
     </div>
 
     <section class="section">
       <div class="section-header">
-        <div>
-          <h2 class="section-title">精选</h2>
-          <div class="section-note">汇总当前最值得优先关注的事件簇。</div>
-        </div>
+        <h2 class="section-title">精选</h2>
       </div>
       <div class="featured-grid" id="featuredGrid">
         <article class="featured-card system active" data-cluster-card="东京地铁中断">
+          <div class="featured-head">
+            <div class="featured-code">JP</div>
+            <div class="featured-flag">🇯🇵</div>
+          </div>
           <div>
-            <div class="featured-flag">🇯🇵 日本</div>
             <div class="featured-title">东京地铁中断</div>
           </div>
           <div class="featured-meta">精选事件 · 核心换乘站与线路之间的拥堵正在扩大。</div>
         </article>
         <article class="featured-card" data-cluster-card="天气变化">
+          <div class="featured-head">
+            <div class="featured-code">FI</div>
+            <div class="featured-flag">🇫🇮</div>
+          </div>
           <div>
-            <div class="featured-flag">🇫🇮 芬兰</div>
             <div class="featured-title">赫尔辛基天气变化</div>
           </div>
           <div class="featured-meta">市中心道路与港口方向的能见度正在下降。</div>
         </article>
         <article class="featured-card" data-cluster-card="停电事件">
+          <div class="featured-head">
+            <div class="featured-code">AR</div>
+            <div class="featured-flag">🇦🇷</div>
+          </div>
           <div>
-            <div class="featured-flag">🇦🇷 阿根廷</div>
             <div class="featured-title">布宜诺斯艾利斯停电事件</div>
           </div>
           <div class="featured-meta">多个市中心街区仍处于停电状态，交通控制受到影响。</div>
         </article>
         <article class="featured-card" data-cluster-card="公共集会">
+          <div class="featured-head">
+            <div class="featured-code">FR</div>
+            <div class="featured-flag">🇫🇷</div>
+          </div>
           <div>
-            <div class="featured-flag">🇫🇷 法国</div>
             <div class="featured-title">巴黎公共集会</div>
           </div>
           <div class="featured-meta">议会附近的人群正在聚集，周边道路开始变慢。</div>
         </article>
         <article class="featured-card" data-cluster-card="港口拥堵">
+          <div class="featured-head">
+            <div class="featured-code">SG</div>
+            <div class="featured-flag">🇸🇬</div>
+          </div>
           <div>
-            <div class="featured-flag">🇸🇬 新加坡</div>
             <div class="featured-title">港口拥堵</div>
           </div>
           <div class="featured-meta">货运主通道出现排队，港区周边道路速度下降。</div>
         </article>
         <article class="featured-card" data-cluster-card="交通封控">
+          <div class="featured-head">
+            <div class="featured-code">US</div>
+            <div class="featured-flag">🇺🇸</div>
+          </div>
           <div>
-            <div class="featured-flag">🇺🇸 美国</div>
             <div class="featured-title">交通封控</div>
           </div>
           <div class="featured-meta">城市核心区临时管制范围扩大，过境路线明显变慢。</div>
@@ -86,11 +100,7 @@
 
     <section class="section">
       <div class="section-header">
-        <div>
-          <h2 class="section-title">发送信号</h2>
-          <div class="section-note">提交一条简短、客观、可验证的现场观察。</div>
-        </div>
-        <div class="composer-status" id="composerStatus">等待输入</div>
+        <h2 class="section-title">发送信号</h2>
       </div>
       <div class="send-grid">
         <div class="send-box">

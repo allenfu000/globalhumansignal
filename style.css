@@ -242,10 +242,22 @@ button, input, textarea { font: inherit; }
   background: linear-gradient(180deg, rgba(15,24,40,0.66), rgba(8,14,23,0.9));
 }
 
+.featured-head {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.featured-code {
+  font-size: 12px;
+  letter-spacing: 0.12em;
+  color: rgba(235,242,255,0.72);
+}
+
 .featured-flag {
   font-size: 20px;
-  margin-bottom: 10px;
-  letter-spacing: 0.02em;
+  margin-bottom: 0;
+  line-height: 1;
   color: rgba(235,242,255,0.62);
 }
 
