@@ -19,7 +19,7 @@
   <meta name="twitter:title" content="全球信号" />
   <meta name="twitter:description" content="现实分布式记录" />
   <meta name="twitter:image" content="https://globalhumansignal.com/share-globe.png?v=20260312-4" />
-  <link rel="stylesheet" href="style.css?v=20260312-4" />
+  <link rel="stylesheet" href="style.css?v=20260312-5" />
 </head>
 <body>
   <main class="page">
@@ -34,60 +34,72 @@
       </div>
     </header>
 
-    <section class="hero">
-      <h2 id="heroStatus">
-        <span class="hero-emoji" aria-hidden="true">
-          <img class="hero-globe-img" src="share-globe.png?v=20260312-4" alt="" />
-        </span>
-        <span class="hero-text">
-          <span class="hero-label">全球信号:</span><span class="hero-count">04</span>
-        </span>
-      </h2>
-    </section>
+    <div class="hero-row">
+      <section class="hero">
+        <h2 id="heroStatus">
+          <span class="hero-emoji" aria-hidden="true">
+            <img class="hero-globe-img" src="share-globe.png?v=20260312-4" alt="" />
+          </span>
+          <span class="hero-text">
+            <span class="hero-label">全球信号：</span><span class="hero-count">04</span>
+          </span>
+        </h2>
+      </section>
+      <button type="button" class="hero-account-entry" data-account-entry aria-label="用户账号入口" aria-expanded="false">
+        <p class="hero-account-id">GS#?</p>
+        <p class="hero-account-label">账号</p>
+      </button>
+    </div>
 
     <section class="section featured">
       <h3 class="section-title">精选</h3>
       <div id="featuredGrid" class="featured-grid">
         <article class="featured-card" data-featured-card>
           <p class="featured-time">当地时间：15:45</p>
-          <p class="featured-location">🇯🇵 日本 · 东京</p>
+          <p class="featured-location"><span class="inline-flag">🇯🇵</span> 日本 · 东京 · 新宿区 西新宿街</p>
           <p class="featured-event">东京地铁中断，多座换乘站延误扩大。</p>
-          <p class="featured-origin" data-collapsible>原文：🇯🇵 GS#10638291 报告：晚高峰期间，市中心多个换乘站台人流突然聚集，列车间隔拉长，部分乘客滞留在闸机区域等待疏导。</p>
+          <p class="featured-origin" data-collapsible><span class="inline-flag">🇯🇵</span>GS#10638291：晚高峰期间，市中心多个换乘站台人流突然聚集，列车间隔拉长，部分乘客滞留在闸机区域等待疏导。</p>
+          <p class="featured-translate" data-collapsible>AI翻译：During the evening peak, crowding rapidly built up at multiple central transfer platforms, train intervals lengthened, and some passengers remained in ticket gate areas awaiting guidance.</p>
           <p class="featured-ai" data-collapsible>AI：东京地铁系统是世界上最繁忙的地铁系统之一，出现换乘节点拥堵时，延误可能通过线路耦合效应向周边区域扩散。历史同类事件中，换乘站滞留通常会在 20 至 40 分钟内传导到邻近线路，恢复过程往往慢于拥堵形成过程。</p>
         </article>
         <article class="featured-card" data-featured-card>
           <p class="featured-time">当地时间：16:08</p>
-          <p class="featured-location">🇫🇮 芬兰 · 赫尔辛基</p>
+          <p class="featured-location"><span class="inline-flag">🇫🇮</span> 芬兰 · 赫尔辛基 · 中央区 码头街</p>
           <p class="featured-event">主干道降雪增强，港区方向能见度持续下降。</p>
-          <p class="featured-origin" data-collapsible>原文：🇫🇮 GS#20851734 反馈：主路车速明显下降，港区入口出现排队，前车灯可见距离变短，路面开始积雪。</p>
+          <p class="featured-origin" data-collapsible><span class="inline-flag">🇫🇮</span>GS#20851734：主路车速明显下降，港区入口出现排队，前车灯可见距离变短，路面开始积雪。</p>
+          <p class="featured-translate" data-collapsible>AI翻译：Traffic speed on main roads dropped noticeably, queues formed at the port entrance, visible headlight distance shortened, and snow began to accumulate on the road surface.</p>
           <p class="featured-ai" data-collapsible>AI：在低温海风条件下，港区沿线容易形成持续降雪带，短时能见度下降会优先影响道路和物流枢纽通行效率。若同时伴随侧风增强，车辆通行速度会进一步下滑，清雪与调度压力通常会在晚高峰时段明显上升。</p>
         </article>
         <article class="featured-card" data-featured-card>
           <p class="featured-time">当地时间：14:52</p>
-          <p class="featured-location">🇦🇷 阿根廷 · 布宜诺斯艾利斯</p>
+          <p class="featured-location"><span class="inline-flag">🇦🇷</span> 阿根廷 · 布宜诺斯艾利斯</p>
           <p class="featured-event">城区停电扩散，多个路口交通灯暂时失效。</p>
-          <p class="featured-origin" data-collapsible>原文：🇦🇷 GS#73165028 报告：微中心区连续三段街区断电，商铺临时关闭，主干路口改为人工指挥。</p>
+          <p class="featured-origin" data-collapsible><span class="inline-flag">🇦🇷</span>GS#73165028：微中心区连续三段街区断电，商铺临时关闭，主干路口改为人工指挥。</p>
+          <p class="featured-translate" data-collapsible>AI翻译：A three-block outage spread across the micro-center area, shops temporarily closed, and major intersections switched to manual traffic control.</p>
           <p class="featured-ai" data-collapsible>AI：城市核心区停电事件若覆盖交通控制节点，通常会先表现为路口拥堵，再逐步影响公共服务与商业活动节奏。电网恢复前，人工指挥与临时绕行会提高道路不确定性，局部拥堵常出现反复峰值。</p>
         </article>
         <article class="featured-card" data-featured-card>
           <p class="featured-time">当地时间：17:03</p>
-          <p class="featured-location">🇫🇷 法国 · 巴黎</p>
+          <p class="featured-location"><span class="inline-flag">🇫🇷</span> 法国 · 巴黎 · 东十一区 共和街</p>
           <p class="featured-event">公共集会升温，核心街区通行速度变慢。</p>
-          <p class="featured-origin" data-collapsible>原文：🇫🇷 GS#90437615 记录：议会周边出现持续人流汇聚，部分路段已设置临时分流，车辆平均通行时间上升。</p>
+          <p class="featured-origin" data-collapsible><span class="inline-flag">🇫🇷</span>GS#90437615：议会周边出现持续人流汇聚，部分路段已设置临时分流，车辆平均通行时间上升。</p>
+          <p class="featured-translate" data-collapsible>AI翻译：Sustained crowd convergence appeared around the parliament area, temporary diversions were set on some roads, and average vehicle travel time increased.</p>
           <p class="featured-ai" data-collapsible>AI：公共集会在核心街区发生时，交通影响通常先出现在边界道路，随后向外围连接路网扩散。若现场持续时间超过预期，分流策略需要动态调整，否则外围道路会出现延后性拥堵波峰。</p>
         </article>
         <article class="featured-card" data-featured-card>
           <p class="featured-time">当地时间：19:20</p>
-          <p class="featured-location">🇸🇬 新加坡 · 港区</p>
+          <p class="featured-location"><span class="inline-flag">🇸🇬</span> 新加坡 · 港区</p>
           <p class="featured-event">港口拥堵上升，货运通道排队时间继续拉长。</p>
-          <p class="featured-origin" data-collapsible>原文：🇸🇬 GS#48591023 反馈：堆场周边等待车辆增加，装卸节奏变慢，主入口通行周期比平时更长。</p>
+          <p class="featured-origin" data-collapsible><span class="inline-flag">🇸🇬</span>GS#48591023：堆场周边等待车辆增加，装卸节奏变慢，主入口通行周期比平时更长。</p>
+          <p class="featured-translate" data-collapsible>AI翻译：More vehicles queued around the yard area, loading and unloading pace slowed, and the main gate cycle became longer than usual.</p>
           <p class="featured-ai" data-collapsible>AI：港区拥堵常与装卸节奏、闸口吞吐和道路协同有关，短时波动会放大到城市物流链条。若车辆等候时间持续拉长，仓储与配送计划会被迫重排，次日早间通行压力也可能被同步抬高。</p>
         </article>
         <article class="featured-card" data-featured-card>
           <p class="featured-time">当地时间：11:37</p>
-          <p class="featured-location">🇺🇸 美国 · 芝加哥</p>
+          <p class="featured-location"><span class="inline-flag">🇺🇸</span> 美国 · 芝加哥 · 库克郡 湖滨街</p>
           <p class="featured-event">高架封控临时扩大，跨区通勤出现连续延迟。</p>
-          <p class="featured-origin" data-collapsible>原文：🇺🇸 GS#66219470 报告：高架入口临时关闭后，替代路线车流叠加，多个匝道出现长队。</p>
+          <p class="featured-origin" data-collapsible><span class="inline-flag">🇺🇸</span>GS#66219470：高架入口临时关闭后，替代路线车流叠加，多个匝道出现长队。</p>
+          <p class="featured-translate" data-collapsible>AI翻译：After the elevated-road entrance was temporarily closed, traffic stacked on alternate routes and long queues appeared at multiple ramps.</p>
           <p class="featured-ai" data-collapsible>AI：高架封控会快速改变城市通勤流向，替代路线负载上升后，拥堵往往表现为分段式持续延迟。若匝道与地面路网衔接点缺乏缓冲，拥堵将呈现“短时缓解后再次抬升”的循环特征。</p>
         </article>
       </div>
@@ -128,6 +140,6 @@
     </section>
   </main>
 
-  <script src="script.js?v=20260312-4"></script>
+  <script src="script.js?v=20260312-5"></script>
 </body>
 </html>
