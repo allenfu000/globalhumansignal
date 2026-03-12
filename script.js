@@ -137,7 +137,7 @@ function openModal(data) {
   modalMeta.textContent = data.time;
   modalOriginal.textContent = data.original;
   modalAi.textContent = data.summary;
-  modalMore.textContent = "系统会保留原始信号作为证据，并在需要时合并进更高层级的事件簇。";
+  modalMore.textContent = "系统会保留原始信号作为证据，并在需要时归并进更高层级的事件簇。";
   modalMask.classList.add("show");
 }
 
@@ -390,7 +390,7 @@ function openReadList() {
       cluster: "历史",
       time: "本地原型",
       original: "当前还没有已抽取的信号记录。",
-      summary: "点击「抽取世界信号」或「查看重点信号」后，这里会显示你看过的信号。",
+      summary: "点击「抽取世界信号」或「查看精选信号」后，这里会显示你看过的信号。",
       message: "暂无已读信号"
     });
     return;
