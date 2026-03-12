@@ -12,12 +12,8 @@ const activeFilter = document.getElementById("activeFilter");
 const clearFilterBtn = document.getElementById("clearFilterBtn");
 const cityList = document.getElementById("cityList");
 const signalCard = document.getElementById("signalCard");
-const cityField = document.getElementById("city");
-const countryField = document.getElementById("country");
-const contextField = document.getElementById("context");
 const messageField = document.getElementById("message");
 const submitButton = document.getElementById("submitSignal");
-const clearButton = document.getElementById("clearBtn");
 const drawWorldBtn = document.getElementById("drawWorldBtn");
 const drawAiBtn = document.getElementById("drawAiBtn");
 const openReadBtn = document.getElementById("openReadBtn");
@@ -80,13 +76,13 @@ function updateCounts() {
   clusterCount.textContent = clusterText;
   panelSignalCount.textContent = signalText;
   panelClusterCount.textContent = clusterText;
-  heroSignalCount.textContent = "全球信号：" + signalText;
+  heroSignalCount.textContent = "全球信号";
 }
 
 function refreshHeadlineCluster() {
   const latestSignal = getSignals()[0];
   const cluster = latestSignal ? latestSignal.dataset.cluster || "未归类观察" : "等待信号";
-  headlineCluster.textContent = "当前精选事件：" + cluster;
+  headlineCluster.textContent = "实时更新：" + cluster;
 }
 
 function syncFeaturedCards() {
@@ -217,17 +213,16 @@ function updateOrInsertFeaturedCard(city, countryCode, cluster, message) {
       </div>
       <div class="featured-meta"></div>
     `;
-    const statCard = featuredGrid.querySelector(".stat-card");
-    featuredGrid.insertBefore(card, statCard || null);
+    featuredGrid.prepend(card);
   }
 
   const normalizedCountry = (countryCode || "").toUpperCase();
-  card.querySelector(".featured-flag").textContent = normalizedCountry || city.slice(0, 2).toUpperCase();
-  card.querySelector(".featured-title").textContent = `${countryToFlag(normalizedCountry)} ${city} ${cluster}`;
+  card.querySelector(".featured-flag").textContent = `${countryToFlag(normalizedCountry)} ${city}`;
+  card.querySelector(".featured-title").textContent = cluster;
   card.querySelector(".featured-meta").textContent = message;
 
-  const cards = Array.from(featuredGrid.querySelectorAll(".featured-card:not(.stat-card)"));
-  if (cards.length > 4) {
+  const cards = Array.from(featuredGrid.querySelectorAll(".featured-card"));
+  if (cards.length > 6) {
     cards[cards.length - 1].remove();
   }
 }
@@ -326,20 +321,17 @@ function bindFlowFilters(root = document) {
 }
 
 function clearFields() {
-  cityField.value = "";
-  countryField.value = "";
-  contextField.value = "";
   messageField.value = "";
 }
 
 function submitSignal() {
-  const city = cityField.value.trim();
-  const country = countryField.value.trim();
-  const cluster = contextField.value.trim();
   const message = messageField.value.trim();
+  const city = "用户提交";
+  const country = "CN";
+  const cluster = "现场观察";
 
-  if (!city || !country || !message) {
-    setComposerStatus("需要填写城市、国家和观察内容", false);
+  if (!message) {
+    setComposerStatus("需要填写观察内容", false);
     return;
   }
 
@@ -376,7 +368,7 @@ function drawAiSignal() {
     return;
   }
 
-  const activeHeadline = headlineCluster.textContent.replace("当前精选事件：", "").trim();
+  const activeHeadline = headlineCluster.textContent.replace("实时更新：", "").trim();
   const preferred = signals.find((signal) => signal.dataset.cluster === activeHeadline) || signals[0];
   const data = getSignalData(preferred);
   readSignals.unshift(data);
@@ -408,10 +400,6 @@ function openReadList() {
 }
 
 submitButton.addEventListener("click", submitSignal);
-clearButton.addEventListener("click", () => {
-  clearFields();
-  setComposerStatus("已清空输入", false);
-});
 drawWorldBtn.addEventListener("click", drawWorldSignal);
 drawAiBtn.addEventListener("click", drawAiSignal);
 openReadBtn.addEventListener("click", openReadList);
@@ -434,10 +422,8 @@ messageField.addEventListener("keydown", (event) => {
   }
 });
 
-[cityField, countryField, contextField, messageField].forEach((field) => {
-  field.addEventListener("input", () => {
-    setComposerStatus("正在记录输入", true);
-  });
+messageField.addEventListener("input", () => {
+  setComposerStatus("正在记录输入", true);
 });
 
 getSignals().forEach((signal) => {

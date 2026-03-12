@@ -10,7 +10,7 @@
   <div class="container">
     <div class="topbar">
       <div class="brand">
-        <h1>全球人类信号</h1>
+        <h1>全球信号</h1>
         <p>现实分布式记录</p>
       </div>
       <div class="topbar-side">
@@ -22,16 +22,9 @@
     <div class="hero-bar">
       <div class="hero-globe"></div>
       <div class="hero-bar-text">
-        <strong id="heroSignalCount">全球信号：04</strong>
-        <span id="headlineCluster">当前精选事件：东京地铁中断</span>
+        <strong id="heroSignalCount">全球信号</strong>
+        <span id="headlineCluster">实时更新：东京地铁中断</span>
       </div>
-    </div>
-
-    <div class="input-rules">
-      <div>欢迎记录你所在城市的真实变化</div>
-      <div>可以表达个人感受，但请注意事实</div>
-      <div>尽量描述正在发生的事情</div>
-      <div>禁止违法内容 / 暴力煽动 / 仇恨言论</div>
     </div>
 
     <section class="section">
@@ -40,44 +33,54 @@
           <h2 class="section-title">精选</h2>
           <div class="section-note">汇总当前最值得优先关注的事件簇。</div>
         </div>
-        <div class="section-note">精选事件优先展示</div>
       </div>
       <div class="featured-grid" id="featuredGrid">
         <article class="featured-card system active" data-cluster-card="东京地铁中断">
           <div>
-            <div class="featured-flag">JP</div>
-            <div class="featured-title">🇯🇵 东京地铁中断</div>
+            <div class="featured-flag">🇯🇵 日本</div>
+            <div class="featured-title">东京地铁中断</div>
           </div>
           <div class="featured-meta">精选事件 · 核心换乘站与线路之间的拥堵正在扩大。</div>
         </article>
         <article class="featured-card" data-cluster-card="天气变化">
           <div>
-            <div class="featured-flag">FI</div>
-            <div class="featured-title">🇫🇮 赫尔辛基天气变化</div>
+            <div class="featured-flag">🇫🇮 芬兰</div>
+            <div class="featured-title">赫尔辛基天气变化</div>
           </div>
           <div class="featured-meta">市中心道路与港口方向的能见度正在下降。</div>
         </article>
         <article class="featured-card" data-cluster-card="停电事件">
           <div>
-            <div class="featured-flag">AR</div>
-            <div class="featured-title">🇦🇷 布宜诺斯艾利斯停电事件</div>
+            <div class="featured-flag">🇦🇷 阿根廷</div>
+            <div class="featured-title">布宜诺斯艾利斯停电事件</div>
           </div>
           <div class="featured-meta">多个市中心街区仍处于停电状态，交通控制受到影响。</div>
         </article>
         <article class="featured-card" data-cluster-card="公共集会">
           <div>
-            <div class="featured-flag">FR</div>
-            <div class="featured-title">🇫🇷 巴黎公共集会</div>
+            <div class="featured-flag">🇫🇷 法国</div>
+            <div class="featured-title">巴黎公共集会</div>
           </div>
           <div class="featured-meta">议会附近的人群正在聚集，周边道路开始变慢。</div>
         </article>
-        <article class="featured-card stat-card">
+        <article class="featured-card" data-cluster-card="港口拥堵">
           <div>
-            <div class="featured-flag">SYS</div>
-            <div class="featured-title"><span id="signalCount">04</span> 条可见信号</div>
+            <div class="featured-flag">🇸🇬 新加坡</div>
+            <div class="featured-title">港口拥堵</div>
           </div>
-          <div class="featured-meta"><span id="clusterCount">04</span> 个活跃事件簇 · 文本优先 · 匿名记录</div>
+          <div class="featured-meta">货运主通道出现排队，港区周边道路速度下降。</div>
         </article>
+        <article class="featured-card" data-cluster-card="交通封控">
+          <div>
+            <div class="featured-flag">🇺🇸 美国</div>
+            <div class="featured-title">交通封控</div>
+          </div>
+          <div class="featured-meta">城市核心区临时管制范围扩大，过境路线明显变慢。</div>
+        </article>
+      </div>
+      <div class="sr-counter" aria-hidden="true">
+        <span id="signalCount">04</span>
+        <span id="clusterCount">04</span>
       </div>
     </section>
 
@@ -91,37 +94,21 @@
       </div>
       <div class="send-grid">
         <div class="send-box">
-          <div class="send-fields-row">
-            <label class="field-group">
-              <span>城市</span>
-              <input id="city" class="text-input" type="text" placeholder="东京" />
-            </label>
-            <label class="field-group">
-              <span>国家</span>
-              <input id="country" class="text-input" type="text" placeholder="日本" />
-            </label>
-            <label class="field-group">
-              <span>事件标签</span>
-              <input id="context" class="text-input" type="text" placeholder="东京地铁中断" />
-            </label>
-          </div>
-          <div class="send-label">
-            <span>发送信号</span>
-            <span>一条简短观察即可</span>
-          </div>
           <textarea id="message" placeholder="记录你所在城市此刻正在发生的事情..."></textarea>
           <div class="send-actions">
-            <div class="muted">信号由人工智能依据用户语言及地区法律整理展示。平台不对内容进行判断或引导。</div>
             <div class="send-action-buttons">
-              <button class="ghost-btn" id="clearBtn" type="button">清空</button>
               <button class="primary-btn" id="submitSignal" type="button">发送信号</button>
             </div>
           </div>
         </div>
         <div class="send-hints">
-          <div class="hint-card">优先描述事实：地点、时间、变化，不要长篇观点。</div>
+          <div class="hint-card">欢迎记录你所在城市的真实变化</div>
+          <div class="hint-card">可以表达个人感受，但请注意事实</div>
+          <div class="hint-card">尽量描述正在发生的事情</div>
+          <div class="hint-card">禁止违法内容 / 暴力煽动 / 仇恨言论</div>
           <div class="hint-card">系统保留原始信号，并将相似内容聚合为更高层级事件。</div>
           <div class="hint-card">点击任一信号可展开查看时间线、关联信号和附近地点。</div>
+          <div class="hint-card">信号由人工智能依据用户语言及地区法律整理展示，平台不进行价值引导。</div>
         </div>
       </div>
     </section>
