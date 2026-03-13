@@ -1353,10 +1353,30 @@
       if (!els.mainLayout || !els.leftPanel || !els.rightPanel || !els.rightTools) return;
       const isNarrow = window.matchMedia("(max-width: 900px)").matches;
       if (isNarrow) {
+        if (els.rightPanel.parentElement !== els.mainLayout) {
+          els.mainLayout.appendChild(els.rightPanel);
+        }
+        if (els.leftPanel.parentElement !== els.mainLayout) {
+          els.mainLayout.appendChild(els.leftPanel);
+        }
         if (els.rightTools.parentElement !== els.mainLayout) {
           els.mainLayout.appendChild(els.rightTools);
         }
-      } else if (els.rightTools.parentElement !== els.rightPanel) {
+        els.mainLayout.appendChild(els.rightPanel);
+        els.mainLayout.appendChild(els.leftPanel);
+        els.mainLayout.appendChild(els.rightTools);
+        return;
+      }
+
+      if (els.leftPanel.parentElement !== els.mainLayout) {
+        els.mainLayout.appendChild(els.leftPanel);
+      }
+      if (els.rightPanel.parentElement !== els.mainLayout) {
+        els.mainLayout.appendChild(els.rightPanel);
+      }
+      els.mainLayout.appendChild(els.leftPanel);
+      els.mainLayout.appendChild(els.rightPanel);
+      if (els.rightTools.parentElement !== els.rightPanel) {
         els.rightPanel.appendChild(els.rightTools);
       }
     }
