@@ -72,6 +72,18 @@
       font-size: 20px;
       border-radius: 8px;
     }
+
+    .debug-block {
+      margin-top: 16px;
+      padding: 12px 16px;
+      background: #1a2a1a;
+      border: 1px solid #2a4a2a;
+      border-radius: 8px;
+      font-size: 14px;
+      color: #b0b0b0;
+      white-space: pre-wrap;
+    }
+    .debug-block strong { color: #e0e0e0; }
   </style>
 </head>
 <body>
@@ -82,6 +94,7 @@
 
     <div class="status" id="status"></div>
     <div class="output" id="output">回复会显示在这里</div>
+    <div class="debug-block" id="debugBlock" style="display: none;"></div>
   </div>
 
   <script>
@@ -106,6 +119,8 @@
 
       status.textContent = "正在请求中...";
       output.textContent = "";
+      document.getElementById("debugBlock").style.display = "none";
+      document.getElementById("debugBlock").textContent = "";
 
       try {
         const response = await fetch("/api/ai", {
@@ -129,9 +144,35 @@
 
         output.textContent = reply || "（未返回文本内容）";
         status.textContent = "请求成功";
+
+        const db = document.getElementById("debugBlock");
+        if (data?.debug) {
+          const d = data.debug;
+          const yes = (v) => (v ? "是" : "否");
+          const ok = (v) => (v === "success" ? "成功" : "失败");
+          const lines = [
+            "1. 是否读到了 SUPABASE_URL：" + yes(d.supabaseUrlSet),
+            "2. 是否读到了 SUPABASE_SERVICE_ROLE_KEY：" + yes(d.supabaseKeySet),
+            "3. 是否尝试写入 Supabase：" + yes(d.supabaseWriteAttempted),
+            "4. user 消息写入：" + ok(d.userMessageWrite),
+            "5. assistant 消息写入：" + ok(d.assistantMessageWrite)
+          ];
+          if (d.userMessageError) {
+            lines.push("user 写入失败原因：" + d.userMessageError);
+          }
+          if (d.assistantMessageError) {
+            lines.push("assistant 写入失败原因：" + d.assistantMessageError);
+          }
+          db.textContent = lines.join("\n");
+          db.style.display = "block";
+        } else {
+          db.style.display = "none";
+          db.textContent = "";
+        }
       } catch (error) {
         output.textContent = "请求失败：" + error.message;
         status.textContent = "出错了";
+        document.getElementById("debugBlock").style.display = "none";
       }
     });
   </script>
