@@ -221,3 +221,43 @@ export async function fetchRecentSupabaseMessages(env, sessionId, limit = 16) {
     .filter((item) => (item.role === "user" || item.role === "assistant") && item.content.trim())
     .sort((a, b) => a.ts - b.ts);
 }
+
+// Fallback: load the most recent session's messages when current session has no history.
+export async function fetchLatestSessionMessages(env, limit = 16) {
+  if (!isSupabaseReady(env)) {
+    return [];
+  }
+
+  const { url, key, table } = getSupabaseConfig(env);
+  const endpoint = new URL(`${url}/rest/v1/${encodeURIComponent(table)}`);
+  endpoint.searchParams.set("select", "session_id,role,content,created_at");
+  endpoint.searchParams.set("order", "created_at.desc");
+  endpoint.searchParams.set("limit", String(Math.max(1, Math.min(limit * 2, 80))));
+
+  const result = await safeFetchJson(endpoint.toString(), {
+    method: "GET",
+    headers: createHeaders(key)
+  });
+
+  if (!result.ok || !Array.isArray(result.data) || !result.data.length) {
+    return [];
+  }
+
+  const latestSessionId = String(result.data[0]?.session_id || "").trim();
+  if (!latestSessionId) {
+    return [];
+  }
+
+  const items = result.data
+    .filter((item) => String(item?.session_id || "").trim() === latestSessionId)
+    .map((item) => ({
+      role: String(item?.role || ""),
+      content: String(item?.content || ""),
+      ts: Date.parse(String(item?.created_at || "")) || Date.now(),
+      source: "cloud"
+    }))
+    .filter((item) => (item.role === "user" || item.role === "assistant") && item.content.trim())
+    .sort((a, b) => a.ts - b.ts);
+
+  return items.slice(-limit);
+}

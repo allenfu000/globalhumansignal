@@ -1,4 +1,4 @@
-import { fetchRecentSupabaseMessages, insertSupabaseMessage, insertSupabaseTask } from "../lib/storage-supabase.js";
+import { fetchLatestSessionMessages, fetchRecentSupabaseMessages, insertSupabaseMessage, insertSupabaseTask } from "../lib/storage-supabase.js";
 
 const JSON_HEADERS = {
   "Content-Type": "application/json; charset=utf-8",
@@ -70,24 +70,37 @@ function parseImages(images) {
     .slice(0, 10);
 }
 
-function buildDevSystemPrompt() {
-  return [
-    "你是开发任务整理助手。输出必须是 JSON，不要输出任何 JSON 之外的文本。",
-    "JSON 结构：",
-    "{",
-    '  "human_summary": "中文说明，给用户看",',
-    '  "cursor_task_title": "任务标题",',
-    '  "cursor_task_prompt": "给 Cursor 的开发任务全文",',
-    '  "affected_files": [],',
-    '  "notes": [],',
-    '  "risk": [],',
-    '  "test_points": []',
-    "}",
-    "要求：",
-    "1) human_summary 用中文，简洁、可执行。",
-    "2) cursor_task_prompt 结构化：目标、改动文件、约束、测试点。",
-    "3) 数组字段必须是字符串数组。"
-  ].join("\n");
+/** 每次请求只发一条 system：控制台身份 + 状态 + 禁止通用话术。开发模式时在同一条里追加 JSON 要求。 */
+function buildConsoleSystemPrompt(opts) {
+  const modeLabel = opts.mode === "dev" ? "开发模式 / Cursor模式" : "普通模式";
+  const openAiStatus = opts.openAiReady ? "已连接" : "未知";
+  const supabaseStatus = opts.supabaseReady ? "已连接" : "未配置或不可用";
+  const historyNote =
+    opts.supabaseCount > 0
+      ? `本会话在数据库中有 ${opts.supabaseCount} 条近期记录，下方已按时间顺序附上。回答时必须结合这些内容和当前控制台状态，禁止给出通用教程或百科式回答。`
+      : "本会话暂无历史记录，请仅根据当前用户输入和下述控制台状态回答。";
+
+  const parts = [
+    "【硬性规定】你是「全球信号智能控制台」的后台助手。严禁使用以下话术或任何变体：\"我是在基于云的环境中运行的人工智能模型\"、\"我的训练数据包括\"、\"我旨在处理和生成文本\"、\"欢迎告诉我\"等。禁止做通用自我介绍，直接以控制台助手身份结合当前状态和会话内容回答。",
+    "",
+    "【当前页面身份】全球信号智能控制台（gs-control）",
+    "【当前模式】" + modeLabel,
+    "【当前会话】session_id: " + (opts.sessionId || "未知"),
+    "【当前连接状态】OpenAI: " + openAiStatus + "；Supabase: " + supabaseStatus + "；本会话历史条数: " + (opts.supabaseCount ?? 0) + "；本次附带图片: " + (opts.imageCount ?? 0) + " 张。",
+    "",
+    historyNote
+  ];
+
+  if (opts.mode === "dev") {
+    parts.push(
+      "",
+      "【开发模式输出】你必须且仅输出一个 JSON，不要输出 JSON 之外的文字。结构：",
+      '{"human_summary":"中文说明","cursor_task_title":"任务标题","cursor_task_prompt":"给 Cursor 的开发任务全文","affected_files":[],"notes":[],"risk":[],"test_points":[]}',
+      "数组字段为字符串数组；cursor_task_prompt 需结构化（目标、改动文件、约束、测试点）。"
+    );
+  }
+
+  return parts.join("\n");
 }
 
 function safeJsonParse(text) {
@@ -283,6 +296,18 @@ export async function onRequestPost(context) {
       historyMessages = [];
     }
 
+    if (!historyMessages.length) {
+      try {
+        const fallback = await fetchLatestSessionMessages(env, 12);
+        if (fallback.length) {
+          historyMessages = fallback;
+          historyLoadError = historyLoadError || "used_latest_session_fallback";
+        }
+      } catch (e) {
+        historyLoadError = historyLoadError || String(e?.message || e || "latest_session_fallback_failed");
+      }
+    }
+
     const userContent = [{ type: "text", text: message }];
     for (const image of images) {
       userContent.push({
@@ -291,13 +316,21 @@ export async function onRequestPost(context) {
       });
     }
 
+    const supabaseReady = Boolean(env?.SUPABASE_URL?.trim() && env?.SUPABASE_SERVICE_ROLE_KEY?.trim());
+    const consoleSystemContent = buildConsoleSystemPrompt({
+      mode,
+      sessionId,
+      openAiReady: true,
+      supabaseReady,
+      supabaseCount: historyMessages.length,
+      imageCount: images.length
+    });
+
     const messages = [];
-    if (mode === "dev") {
-      messages.push({
-        role: "system",
-        content: buildDevSystemPrompt()
-      });
-    }
+    messages.push({
+      role: "system",
+      content: consoleSystemContent
+    });
 
     for (const item of historyMessages) {
       const role = item?.role === "assistant" ? "assistant" : "user";

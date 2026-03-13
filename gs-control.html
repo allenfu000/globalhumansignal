@@ -543,6 +543,37 @@
       }
     }
 
+    /* 移动端专用布局：回复在上，输入和语音靠近，在其下方 */
+    @media (max-width: 768px) {
+      .main {
+        display: flex;
+        flex-direction: column;
+      }
+      #rightPanel {
+        order: 1;
+      }
+      #leftPanel {
+        order: 2;
+        display: flex;
+        flex-direction: column;
+      }
+      #rightTools {
+        order: 3;
+      }
+      .section-input {
+        order: 1;
+      }
+      .section-voice {
+        order: 2;
+      }
+      .section-images {
+        order: 3;
+      }
+      .section-cache {
+        order: 4;
+      }
+    }
+
     @media (min-width: 1200px) {
       .header {
         padding: 22px 25px;
@@ -602,7 +633,7 @@
 
     <main class="main" id="mainLayout">
       <section class="left" id="leftPanel">
-        <div class="section">
+        <div class="section section-input">
           <h3 class="section-title">输入区</h3>
           <div class="input-shell is-empty">
             <textarea id="messageInput" placeholder="输入你的需求、问题或开发想法（支持 Shift+Enter 换行）"></textarea>
@@ -616,7 +647,7 @@
           <div class="status" id="statusText"></div>
         </div>
 
-        <div class="section">
+        <div class="section section-images">
           <h3 class="section-title">图片附件（最多 10 张）</h3>
           <div class="btn-row">
             <label class="file-btn" for="imageInput">
@@ -629,7 +660,7 @@
           <div class="preview-wrap" id="previewWrap"></div>
         </div>
 
-        <div class="section">
+        <div class="section section-voice">
           <h3 class="section-title">语音输入（转文字）</h3>
           <div class="btn-row">
             <button type="button" id="voiceBtn">开始语音输入</button>
@@ -637,7 +668,7 @@
           <div class="voice-state" id="voiceState">语音状态：未开始</div>
         </div>
 
-        <div class="section">
+        <div class="section section-cache">
           <h3 class="section-title">草稿与缓存</h3>
           <div class="btn-row">
             <button type="button" id="clearCacheBtn" class="danger">清理本地缓存</button>
